@@ -1,0 +1,3 @@
+var vListItem = function(book) {
+	
+}

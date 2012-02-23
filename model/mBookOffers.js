@@ -36,6 +36,7 @@ mBookOffers.prototype.getOfferCondition = function (condition) {
 	if(condition == 0 || condition == 2 || condition == 4 || condition == 7) return cons.USED;
 	if(condition == 5) return cons.EBOOK
 	if(condition == 6) return cons.RENTAL;
+	
 }
 
 

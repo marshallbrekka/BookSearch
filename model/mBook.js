@@ -1,7 +1,6 @@
 // require mAPIObject
 
 var mBook = function(book) {
-	console.log(book);
 	var propertyNames = {
 		isbn10:null,
 		isbn13:null,
@@ -12,14 +11,15 @@ var mBook = function(book) {
 		pages:null,
 		publisher:null,
 		published_date:'publishedDate',
-		edition:null
+		edition:null,
+		image:'imageSmall'
 	};
 	
 	
 	this.loadProperties(book, propertyNames);
 	
-	
 	this.offers = null;
+	this.imageLarge = null;
 
 }
 

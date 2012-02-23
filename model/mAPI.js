@@ -25,8 +25,7 @@ proto.bookInfo = function(isbn, imgWidth, callback) {
 		'search',
 		{'keywords':isbn,'page':1,'img_width':imgWidth}, 
 		this._bookInfo, 
-		callback, 
-		{imageKey : this._imageSizeKey(imgWidth)}
+		callback
 	);
 }
 
@@ -35,33 +34,51 @@ proto.search = function(keywords, imgWidth, page, callback) {
 		'search', 
 		{'keywords':keywords, 'page':page, 'img_width':imgWidth}, 
 		this._search, 
-		callback, 
-		{imageKey : this._imageSizeKey(imgWidth)}
+		callback
 	);
 }
 
 /*
 proto.bookPricesAndInfo = function(isbn, imgWidth, callback) {
-	this._genericSystem('bookprices', {'isbn':isbn, 'img_width':imgWidth}, this._bookPricesAndInfo, callback);
-}*/
+	var self = this;
+	this._genericSystem(
+		'bookprices', 
+		{'isbn':isbn, 'img_width':imgWidth}, 
+		function(data){
+			self._bookPricesAndInfo.call(self, data);
+		},
+		callback
+	);
+}
+*/
 
 
 proto.merchants = function(callback) {
 	this._genericSystem('merchants', {'coupons':''}, this._merchants, callback);
 }
 
+
 proto._bookPrices = function(data) {
 	var offers = new mBookOffers(data.offers.condition);
 	return offers;
 }
 
+// based off data returned from search function
 proto._bookInfo = function(data) {
+
 	var tmp = data.results.book;
 	if(tmp.length == 0) return null;
 	
 	return new mBook(tmp[0]);
 }
 
+// based off data returned from bookInfo function
+proto._bookInfoHelper = function(data) {
+	return new mBook(data.book);
+}
+
+
+// depreciated
 proto._imageSizeKey = function(size) {
 	if(size > this.IMAGE_WIDTH_SM) {
 		return 'imageLg';
@@ -93,11 +110,13 @@ proto._search = function(data) {
 	return results;
 }
 
-/*
+
 proto._bookPricesAndInfo = function(data) {
-	console.log(data);
+	var book = this._bookInfoHelper(data);
+	book.offers = this._bookPrices(data);
+	return book;
 }
-*/
+
 
 proto._merchants = function(data) {
 	var merchants = [];
@@ -108,37 +127,36 @@ proto._merchants = function(data) {
 	return merchants;
 }
 
-proto._genericSystem = function(func, params, dataFunc, callback) {
+proto._genericSystem = function(func, params, dataFunc, callback, optionalData) {
 	this._buildQuery(func, params, function(data, status) {
 		var output = {status:true, data:null};
 		if(status !== 'success') {
 			output.status = false;
 		} else {
-			output.data = dataFunc(data.response.page);
+			console.log(data.response.page);
+			output.data = dataFunc(data.response.page, optionalData);
 		}
 		 
-		callback.fn.call(callback.obj,output);
+		callback.fn.call(callback.obj, output);
 	});
 }
 
-proto._buildQuery = function(func, params, callback, optionalData) {
+proto._buildQuery = function(func, params, callback) {
 	var full = this.BASE_URL + func + "?";
 	full += "key=" + this.API_KEY + "&format=json";
 	for(var key in params) {
 		full += "&" + key + '=' + params[key];
 	}
 			
-	return this._loadQuery(full, callback, optionalData);
+	return this._loadQuery(full, callback);
 }
 
-proto._loadQuery = function(url, callback, optionalData) {
+proto._loadQuery = function(url, callback) {
 	$.ajax({
 		url: url,
 		dataType: 'jsonp',
 		data: '',
-		success: function(data){
-			callback(data, optionalData);
-		}
+		success: callback
 	});
 	
 }

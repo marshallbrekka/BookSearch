@@ -17,7 +17,7 @@ var vListView = function(clickCallback, loadMoreCallback) {
 	this._elements = [];
 	this._selectedIndex = null;
 	this._loading = false;
-	
+	 
 	this._loadMoreBtn.click(function(event){
 		if(!self._loading) return
 		event.preventDefault();

@@ -32,7 +32,7 @@ var vListItem = function(book) {
 		if ( !empty(metaVals[i]) ) {
 			var keyElem = DOM.create({
 				tag : 'span',
-				text : metaKeys[i]
+				text : metaKeys[i] + ':'
 			});
 			var whole = DOM.create({
 				tag : 'div',
@@ -54,9 +54,9 @@ vListItem.prototype.constructor = vListItem;
 vListItem.prototype.container = null;
 
 vListItem.prototype.select = function() {
-	$(this.container).addClass(mConstants.css.selected);
+	DOM.addClass(this.container, mConstants.css.selected);
 }
 
 vListItem.prototype.deselect = function() {
-	$(this.container).removeClass(mConstants.css.selected);
+	DOM.removeClass(this.container,mConstants.css.selected);
 }

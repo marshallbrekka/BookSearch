@@ -5,6 +5,10 @@ var mApp = function () {
 		var tmp = JSON.parse(localStorage.getItem('merchants'));
 		this.merchants = tmp == null ? this.merchants : tmp;
 	}
+	
+	this.currentSearch = null;
+	this.currentPage = 1;
+	this.maxPages = null;
 }
 
 

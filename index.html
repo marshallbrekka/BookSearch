@@ -7,6 +7,8 @@ and open the template in the editor.
 	<head>
 		<title></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet/less" type="text/css" href="css/reset.less"></link>
+		<link rel="stylesheet/less" type="text/css" href="css/styles.less"></link>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script src="lang/globals.js"></script>
 		<script src="lang/config.js"></script>
@@ -22,10 +24,16 @@ and open the template in the editor.
 		<script src="view/vListItem.js"></script>
 		<script src="view/vListView.js"></script>
 		<script src="main.js"></script>
+		<script src="plugins/less-1.2.1.min.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="bookSearchJS">
-			<div id="bs-searchBar"></div>
+			<div id="bs-searchBar">
+				<form>
+					<input type="text" id="search"/>
+					<input type="submit"/>
+				</form>
+			</div>
 			<div id="bs-results">
 				<div id="bs-list">
 					

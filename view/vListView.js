@@ -8,8 +8,8 @@ var vListView = function(clickCallback, loadMoreCallback) {
 	
 	this._loadMoreBtn = DOM.create({
 		tag : 'li',
-		options : {domClass : [mConstants.css.listItem, mConstants.css.listLoadMore]},
-		text : 'Load More',
+		options : {domClass : mConstants.css.listLoadMore},
+		text : mConstants.strings.listLabels.loadMore,
 		jquery : true
 	});
 	this._hideLoadMoreBtn();
@@ -19,8 +19,9 @@ var vListView = function(clickCallback, loadMoreCallback) {
 	this._loading = false;
 	 
 	this._loadMoreBtn.click(function(event){
-		if(!self._loading) return
-		event.preventDefault();
+		console.log('load more');
+		if(self._loading) return;
+		event.stopImmediatePropagation();
 		self.setLoading();
 		loadMoreCallback();
 		
@@ -29,7 +30,7 @@ var vListView = function(clickCallback, loadMoreCallback) {
 	this._emptyIndicator = DOM.create({
 		tag : 'li',
 		options : {domClass : mConstants.css.listEmptyIndicator},
-		text : 'No Books Found',
+		text : mConstants.strings.listLabels.emptyList,
 		jquery : true
 	});
 	
@@ -38,6 +39,7 @@ var vListView = function(clickCallback, loadMoreCallback) {
 	
 	
 	this.container.on("click", "li", function(event){
+		if (self._elements.length === 0) return;
 		var index = $(this).index();
 		if(self._selectedIndex != null) {
 			self._elements[self._selectedIndex].deselect();
@@ -59,7 +61,7 @@ vListView.prototype.addElements = function(elements, hasMore) {
 	
 	if(this._elements.length === 0) {
 		if(this._loading) {
-			this._emptyIndicator.removeClass(mConstants.css.listLoadingIndicator);
+			DOM.removeClass(this._emptyIndicator, mConstants.css.listLoadingIndicator);
 		}
 		
 		if(elements.length !== 0) {
@@ -70,7 +72,7 @@ vListView.prototype.addElements = function(elements, hasMore) {
 		if(!hasMore) {
 			this._hideLoadMoreBtn();
 		} 
-		this._loadMoreBtn.removeClass(mConstants.css.listLoadingIndicator);
+		DOM.removeClass(this._loadMoreBtn, mConstants.css.listLoadingIndicator);
 	}
 
 	this._loading = false;
@@ -86,10 +88,10 @@ vListView.prototype.addElements = function(elements, hasMore) {
 vListView.prototype.clearElements = function() {
 	this._elements = [];
 	this._selectedIndex = null;
-	this.container.children().remove();
+	this.container.children(':not(:last)').remove();
 	this.container.append(this._emptyIndicator);
 	this._hideLoadMoreBtn();
-	this.container.append(this._loadMoreBtn);
+	//this.container.append(this._loadMoreBtn);
 	
 	
 }
@@ -97,9 +99,9 @@ vListView.prototype.clearElements = function() {
 vListView.prototype.setLoading = function() {
 	this._loading = true;
 	if(this._elements.length === 0) {
-		this._emptyIndicator.addClass(mConstants.css.listLoadingIndicator);
+		DOM.addClass(this._emptyIndicator, mConstants.css.listLoadingIndicator);
 	} else {
-		this._loadMoreBtn.addClass(mConstants.css.listLoadingIndicator);
+		DOM.addClass(this._loadMoreBtn, mConstants.css.listLoadingIndicator);
 	}
 	
 	

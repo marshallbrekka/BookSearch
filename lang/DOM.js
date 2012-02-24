@@ -60,5 +60,13 @@ DOM.prototype.create = function(args) {
 	
 }
 
+DOM.prototype.addClass = function(obj, domClass) {
+	$(obj).addClass(mConstants.domPrefix + domClass);
+}
+
+DOM.prototype.removeClass = function(obj, domClass) {
+	$(obj).removeClass(mConstants.domPrefix + domClass);
+}
+
 var DOM = new DOM();
 

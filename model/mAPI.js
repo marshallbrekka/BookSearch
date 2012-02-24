@@ -1,10 +1,10 @@
 // require mBook, mBookOffers, mMerchant
 
 
-var mAPI = function(API_KEY, IMG_WIDTH_SM, IMG_WIDTH_LG) {
+var mAPI = function(API_KEY, IMG_SIZE_SM, IMG_SIZE_LG) {
 	this.API_KEY = API_KEY;
-	this.IMG_WIDTH_SM = IMG_WIDTH_SM;
-	this.IMG_WIDTH_LG = IMG_WIDTH_LG;
+	this.IMG_SIZE_SM = IMG_SIZE_SM;
+	this.IMG_SIZE_LG = IMG_SIZE_LG;
 	this.BASE_URL = 'http://api2.campusbooks.com/12/rest/';
 }
 
@@ -17,22 +17,22 @@ proto.bookPrices = function(isbn, callback) {
 	this._genericSystem('prices', {'isbn':isbn}, this._bookPrices, callback);
 }
 
-proto.bookInfo = function(isbn, imgWidth, callback) {
+proto.bookInfo = function(isbn, imgSize, callback) {
 	// not using because returns inferior results to search function
 	//this._genericSystem('bookinfo', {'isbn':isbn,'image_width':imgWidth}, this._bookInfo, callback);
 	
 	this._genericSystem(
 		'search',
-		{'keywords':isbn,'page':1,'img_width':imgWidth}, 
+		{'keywords':isbn,'page':1, image_height : imgSize}, 
 		this._bookInfo, 
 		callback
 	);
 }
 
-proto.search = function(keywords, imgWidth, page, callback) {
+proto.search = function(keywords, imgSize, page, callback) {
 	this._genericSystem(
 		'search', 
-		{'keywords':keywords, 'page':page, 'img_width':imgWidth}, 
+		{'keywords':keywords, 'page':page, image_height : imgSize}, 
 		this._search, 
 		callback
 	);
@@ -75,14 +75,6 @@ proto._bookInfo = function(data) {
 // based off data returned from bookInfo function
 proto._bookInfoHelper = function(data) {
 	return new mBook(data.book);
-}
-
-
-// depreciated
-proto._imageSizeKey = function(size) {
-	if(size > this.IMAGE_WIDTH_SM) {
-		return 'imageLg';
-	} else return 'imageSm';
 }
 
 

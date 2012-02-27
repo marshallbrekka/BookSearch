@@ -13,6 +13,7 @@
 	min-width:400px;
 }
 .bs-list {
+	
 	font-family:Arial, sans-serif;
 	position:absolute;
 	top:0;
@@ -40,6 +41,7 @@
 }
 
 .bs-list_load_more {
+	cursor:pointer;
 	text-align:center;
 	height:60px;
 	line-height:60px;
@@ -52,15 +54,18 @@
 	padding-top:60px;
 	overflow:hidden;
 	background:url(../img/loader-list-empty.gif) no-repeat center center;
+	cursor:default;
 }
 
 .bs-list_item {
+	cursor:pointer;
 	height:82px;
 	border-bottom:1px solid #e8e8e8;
 	padding:10px 0px 0px 10px;
 }
 
 .bs-list_item.bs-selected {
+	cursor:default;
 	background:#6fbafb;
 }
 
@@ -104,8 +109,20 @@
 		float:left;	
 	}
 	
-	.bs-selected .bs-book_img {
-		.box-shadow(0px, 2px, 5px, #61a2db);
+	.bs-selected {
+		.bs-book_img {
+			.box-shadow(0px, 2px, 5px, #61a2db);
+		}
+		.bs-list_item_title {
+			color:#fff;
+		}
+		
+		.bs-list_item_meta_text  {
+			color:#fff;
+			span {
+				color:#e1f1ff;
+			}
+		}
 	}
 }
 

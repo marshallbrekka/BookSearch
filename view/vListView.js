@@ -65,8 +65,12 @@ vListView.prototype.addElements = function(elements, hasMore) {
 		}
 		
 		if(elements.length !== 0) {
+			
 			this._emptyIndicator.remove();
-			this._showLoadMoreBtn();
+			if(hasMore) {
+				this._showLoadMoreBtn();
+			}
+			
 		}
 	} else {
 		if(!hasMore) {

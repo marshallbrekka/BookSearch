@@ -1,122 +1,115 @@
-var vListView = function(clickCallback, loadMoreCallback) {
+
+/**
+ * clickCallback callback to be called when an item is selected
+ * emptyLabel text value of the empty label
+ * footer jquery dom node that sits at the bottom of the list
+ */
+var vListView = function(clickCallback, emptyLabel, footer) {
 	var self = this;
+	this._clickCallback = clickCallback;
 	this.container = DOM.create({
 		tag : 'ul',
 		options : {domClass : mConstants.css.list},
 		jquery : true
 	});
+	this._footer = footer;
 	
-	this._loadMoreBtn = DOM.create({
-		tag : 'li',
-		options : {domClass : mConstants.css.listLoadMore},
-		text : mConstants.strings.listLabels.loadMore,
-		jquery : true
-	});
-	this._hideLoadMoreBtn();
+	this._hideFooter();
 
 	this._elements = [];
 	this._selectedIndex = null;
 	this._loading = false;
 	 
-	this._loadMoreBtn.click(function(event){
-		console.log('load more');
-		if(self._loading) return;
-		event.stopImmediatePropagation();
-		self.setLoading();
-		loadMoreCallback();
-		
-	});
 	
 	this._emptyIndicator = DOM.create({
 		tag : 'li',
-		options : {domClass : mConstants.css.listEmptyIndicator},
-		text : mConstants.strings.listLabels.emptyList,
+		options : {domClass : mConstants.css.emptyIndicator},
+		text : emptyLabel,
 		jquery : true
 	});
 	
 	this.container.append(this._emptyIndicator);
-	this.container.append(this._loadMoreBtn);
+	if(this._footer) this.container.append(this._footer);
 	
 	
-	this.container.on("click", "li", function(event){
-		if (self._elements.length === 0) return;
+	
+	DOM.onClick(this.container, "li", function(event){
 		var index = $(this).index();
-		if(self._selectedIndex != null) {
-			self._elements[self._selectedIndex].deselect();
-		} 
-		self._selectedIndex = index;
-		self._elements[index].select();
-		clickCallback(index);
+		self._listItemClick(index);
 	});
 	
 }
 
 /**
  * adds books to list
- * @param {mBook[]} elements an array of mBook objects
- * @param {bool} hasMore are there more elements that can be loaded
+ * @param {domNodes[]} elements an array of domNodes
+ * 
  */
-vListView.prototype.addElements = function(elements, hasMore) {
+vListView.prototype.addElements = function(elements) {
 	// switch/remove loading indicators and buttons depending on states
 	
 	if(this._elements.length === 0) {
 		if(this._loading) {
-			DOM.removeClass(this._emptyIndicator, mConstants.css.listLoadingIndicator);
+			DOM.removeClass(this._emptyIndicator, mConstants.css.loadingIndicator);
 		}
 		
 		if(elements.length !== 0) {
-			
 			this._emptyIndicator.remove();
-			if(hasMore) {
-				this._showLoadMoreBtn();
-			}
-			
 		}
-	} else {
-		if(!hasMore) {
-			this._hideLoadMoreBtn();
-		} 
-		DOM.removeClass(this._loadMoreBtn, mConstants.css.listLoadingIndicator);
 	}
 
 	this._loading = false;
 
-	var domNode;
-	for (var i in elements) {
-		domNode = new vListItem(elements[i]);
-		this._elements.push(domNode);
-		this._loadMoreBtn.before(domNode.container);
+	
+	for (var node in elements) {
+		
+		this._elements.push(node);
+		if(this._footer) {
+			this._footer.before(node.container);
+		} else {
+			this.container.append(node.container);
+		}
+		
 	}
 }
 
 vListView.prototype.clearElements = function() {
 	this._elements = [];
 	this._selectedIndex = null;
-	this.container.children(':not(:last)').remove();
+	this.container.children().remove();
 	this.container.append(this._emptyIndicator);
-	this._hideLoadMoreBtn();
-	//this.container.append(this._loadMoreBtn);
-	
-	
+	this.hideFooter();
+	if(this._footer) this.container.append(this._footer);
 }
 
 vListView.prototype.setLoading = function() {
 	this._loading = true;
 	if(this._elements.length === 0) {
-		DOM.addClass(this._emptyIndicator, mConstants.css.listLoadingIndicator);
-	} else {
-		DOM.addClass(this._loadMoreBtn, mConstants.css.listLoadingIndicator);
-	}
-	
-	
+		DOM.addClass(this._emptyIndicator, mConstants.css.loadingIndicator);
+	} 
 }
 
-vListView.prototype._showLoadMoreBtn = function() {
-	this._loadMoreBtn.css('display','block');
+vListView.prototype.showFooter = function() {
+	if(this._footer) this._footer.css('display','block');
 }
 
-vListView.prototype._hideLoadMoreBtn = function() {
-	this._loadMoreBtn.css('display','none');
+vListView.prototype.hideFooter = function() {
+	if(this._footer) this._footer.css('display','none');
 }
+
+vListView.prototype._listItemClick = function(index) {
+	var numElements = this._elements.length
+	if (numElements === 0 || numElements === index) return;
+	
+		
+	if(this._selectedIndex != null) {
+		this._elements[this._selectedIndex].deselect();
+	} 
+	this._selectedIndex = index;
+	this._elements[index].select();
+	this._clickCallback(index);
+}
+
+
 
 

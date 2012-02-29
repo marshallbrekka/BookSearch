@@ -7,12 +7,17 @@ mConstants.css = {
 	bookSizeSmall : 'book_img_small',
 	bookSizeLarge : 'book_img_large',
 	list : 'list',
-	listEmptyIndicator : 'list_empty_indicator',
-	listLoadingIndicator : 'list_loading_indicator',
-	listItem : 'list_item', 
-	listItemTitle : 'list_item_title',
-	listItemMetaText : 'list_item_meta_text',
-	listLoadMore : 'list_load_more'
+	emptyIndicator : 'empty_indicator',
+	loadingIndicator : 'loading_indicator',
+	listBookItem : 'list_book_item', 
+	listBookItemTitle : 'list_book_item_title',
+	listBookItemMetaText : 'list_book_item_meta_text',
+	listLoadMore : 'list_load_more',
+	tabView : 'tab_view',
+	tabWell : 'tab_well',
+	tabContentContainer : 'tab_content_container',
+	tabButton : 'tab_button',
+	tabContent : 'tab_content'
 };
 
 mConstants.strings = {
@@ -21,8 +26,12 @@ mConstants.strings = {
 		isbn10 : 'ISBN10',
 		isbn13 : 'ISBN13'
 	},
-	listLabels : {
+	listBookLabels : {
 		loadMore : 'Load More',
 		emptyList : 'No Books to Display'
+	},
+	tabLabels : {
+		empty : 'No Book to Display',
+		pricesEmpty : 'No Prices Found'
 	}
 };

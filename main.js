@@ -20,8 +20,16 @@ var selected = function(index) {
 	alert(index);
 }
 var list = null;
+var tabView = null;
 $(function(){
 	list = new vListView(selected, loadMore);
+	tabView = new vTabView();
+	$('#bs-book').append(tabView.container);
+	tabView.addTab("Info", $('<p class="bs-tab_content">tab 1</p>'));
+	tabView.addTab("New", $('<p class="bs-tab_content">tab 2</p>'));
+	tabView.addTab("Used", $('<p class="bs-tab_content">tab 3</p>'));
+	tabView.showTab(0);
+	tabView.setEmpty(false);
 	$('#bs-list').append(list.container);
 	
 	$('#bs-searchBar form').submit(function(){

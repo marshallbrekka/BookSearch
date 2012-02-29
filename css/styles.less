@@ -4,6 +4,19 @@
 	box-shadow: @horiz @vert @blur @spread @color;
 }
 
+#bookSearchJS {
+	font-family:Arial, sans-serif;
+}
+
+.bs-empty_indicator {
+		text-align: center;
+		position: absolute;
+		width: 100%;
+		top: 50%;
+		color:#666666;
+		text-shadow: 0px 1px 0px #fff;
+	}
+
 #bs-list {
 	position:absolute;
 	top:70px;
@@ -14,7 +27,7 @@
 }
 .bs-list {
 	
-	font-family:Arial, sans-serif;
+	
 	position:absolute;
 	top:0;
 	bottom:0;
@@ -22,77 +35,74 @@
 	right:0;
 	overflow-y:scroll;
 	background:#f7f7f7;
-}
-
-.bs-list_empty_indicator {
-	text-align: center;
-	position: absolute;
-	width: 100%;
-	top: 50%;
-	color:#666666;
-	text-shadow: 0px 1px 0px #fff;
-}
-
-.bs-list_empty_indicator.bs-list_loading_indicator {
-	overflow:hidden;
-	height:0px;
-	padding-top:32px;
-	background:url(../img/loader-list-empty.gif) no-repeat center center;
-}
-
-.bs-list_load_more {
-	cursor:pointer;
-	text-align:center;
-	height:60px;
-	line-height:60px;
-	font-weight:bold;
-	color:#666666;
-}
-
-.bs-list_load_more.bs-list_loading_indicator {
-	height:0px;
-	padding-top:60px;
-	overflow:hidden;
-	background:url(../img/loader-list-empty.gif) no-repeat center center;
-	cursor:default;
-}
-
-.bs-list_item {
-	cursor:pointer;
-	height:82px;
-	border-bottom:1px solid #e8e8e8;
-	padding:10px 0px 0px 10px;
-}
-
-.bs-list_item.bs-selected {
-	cursor:default;
-	background:#6fbafb;
-}
-
-.bs-list_item_title, .bs-list_item_meta_text {
 	
-	overflow:hidden;
-	white-space: nowrap;
-	padding-left:10px;
-}
-
-.bs-list_item_title {
-	color:#333333;
-	font-size:18px;
-	line-height:22px;
-	font-weight:bold;
-}
-
-.bs-list_item_meta_text {
-	line-height:18px;
-	font-size:14px;
-	color:#666666;
 	
-	span {
-		width:60px;
-		color:#999999;
-		display:inline-block;
+
+	.bs-empty_indicator.bs-loading_indicator {
+		overflow:hidden;
+		height:0px;
+		padding-top:32px;
+		background:url(../img/loader-list-empty.gif) no-repeat center center;
 	}
+
+
+
+
+	.bs-list_load_more {
+		cursor:pointer;
+		text-align:center;
+		height:60px;
+		line-height:60px;
+		font-weight:bold;
+		color:#666666;
+	}
+
+	.bs-list_load_more.bs-loading_indicator {
+		height:0px;
+		padding-top:60px;
+		overflow:hidden;
+		background:url(../img/loader-list-empty.gif) no-repeat center center;
+		cursor:default;
+	}
+
+	.bs-list_item {
+		cursor:pointer;
+		height:82px;
+		border-bottom:1px solid #e8e8e8;
+		padding:10px 0px 0px 10px;
+	}
+
+	.bs-list_item.bs-selected {
+		cursor:default;
+		background:#6fbafb;
+	}
+
+	.bs-list_item_title, .bs-list_item_meta_text {
+
+		overflow:hidden;
+		white-space: nowrap;
+		padding-left:10px;
+	}
+
+	.bs-list_item_title {
+		color:#333333;
+		font-size:18px;
+		line-height:22px;
+		font-weight:bold;
+	}
+
+	.bs-list_item_meta_text {
+		line-height:18px;
+		font-size:14px;
+		color:#666666;
+
+		span {
+			width:60px;
+			color:#999999;
+			display:inline-block;
+		}
+	}
+
 }
 
 .bs-book_img {
@@ -124,6 +134,78 @@
 			}
 		}
 	}
+}
+
+
+#bs-book {
+	position:absolute;
+	top:70px;
+	right:0;
+	bottom:0;
+	left:40%;
+	padding-left:30px;
+	min-width:400px;
+}
+
+.bs-tab_view {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:30px;
+	right:0;
+	
+	.bs-tab_content_container {
+		position:absolute;
+		top:36px;
+		bottom:0;
+		left:0;
+		right:0;
+	}
+	
+	.bs-tab_well {
+		border-bottom:2px solid #6e6e6e;
+		height:34px;
+	}
+	
+	.bs-tab_button {
+		cursor:pointer;
+		padding:2px 13px;
+		color:#666666;
+		font-size:20px;
+		line-height:30px;
+		vertical-align: middle;
+		font-weight:bold;
+		float:left;
+		height:30px;
+		border-bottom:2px solid #48a2ff;
+		
+	}
+	
+	.bs-tab_button:hover {
+		background:#f4f4f4;
+	}
+	
+	.bs-tab_button.bs-selected {
+		
+		padding-bottom:0px;
+
+		border-bottom-width: 4px;
+	}
+	
+	
+	.bs-tab_content {
+		display:none;
+		position:absolute;
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+	}
+	
+	.bs-tab_content.bs-selected {
+		display:block;
+	}
+	
 }
 
 

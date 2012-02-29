@@ -9,9 +9,10 @@ var mApp = function () {
 	this.currentSearch = null;
 	this.currentPage = 1;
 	this.maxPages = null;
+	
 }
 
-
+mApp.prototype.mobile = false;
 
 mApp.prototype.addMerchants = function(merchantsXHR) {
 	if(merchantsXHR.status) {

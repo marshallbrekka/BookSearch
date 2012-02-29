@@ -18,7 +18,7 @@ var vListItem = function(book) {
 	
 	var title = DOM.create({
 		tag : 'div',
-		options : {domClass : mConstants.css.listItemTitle},
+		options : {domClass : mConstants.css.listBookItemTitle},
 		text : book.title
 	});
 	
@@ -36,7 +36,7 @@ var vListItem = function(book) {
 			});
 			var whole = DOM.create({
 				tag : 'div',
-				options : {domClass : mConstants.css.listItemMetaText},
+				options : {domClass : mConstants.css.listBookItemMetaText},
 				children : [keyElem, metaVals[i]]
 			});
 			elements.push(whole);
@@ -45,7 +45,7 @@ var vListItem = function(book) {
 	
 	this.container = DOM.create({
 		tag : 'li',
-		options : {domClass: mConstants.css.listItem},
+		options : {domClass: mConstants.css.listBookItem},
 		children : elements
 	});
 }

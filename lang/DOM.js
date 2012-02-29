@@ -68,5 +68,25 @@ DOM.prototype.removeClass = function(obj, domClass) {
 	$(obj).removeClass(mConstants.domPrefix + domClass);
 }
 
+DOM.prototype.click = function(obj, func) {
+	if(mApp.mobile) {
+		console.log('mobile not implemented yet');
+	} else {
+		$(obj).click(func);
+	}
+}
+
+/** 
+ * same as jquery on method, but will auto decide between click and touch based events
+ */
+DOM.prototype.onClick = function(obj, selector, func) {
+	var event = "click"
+	
+	if(mApp.mobile) {
+		console.log('mobile not implemented yet');
+	} 
+	$(obj).on(event, "li", func);
+}
+
 var DOM = new DOM();
 

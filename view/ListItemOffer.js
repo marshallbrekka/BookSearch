@@ -38,13 +38,13 @@
 	}
 
 	
-	view.ListItemBook.prototype.container = null;
+	view.ListItemOffer.prototype.container = null;
 
-	view.ListItemBook.prototype.select = function() {
+	view.ListItemOffer.prototype.select = function() {
 		lib.dom.addClass(this.container, lib.constants.css.selected);
 	}
 
-	view.ListItemBook.prototype.deselect = function() {
+	view.ListItemOffer.prototype.deselect = function() {
 		lib.dom.removeClass(this.container,lib.constants.css.selected);
 	}
 })(JSBookSearch);

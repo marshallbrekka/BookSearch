@@ -67,8 +67,7 @@
 			'publisher',
 			'publishedDate',
 			'msrp',
-			'pages',
-			'edition'
+			'pages'
 		];
 		
 

@@ -8,6 +8,7 @@
 		bookImage : 'book_img', 
 		bookSizeSmall : 'book_img_small',
 		bookSizeLarge : 'book_img_large',
+		
 		list : 'list',
 		listBooks : 'list_books',
 		emptyIndicator : 'empty_indicator',
@@ -17,6 +18,10 @@
 		listBookItemTitle : 'list_book_item_title',
 		listBookItemMetaText : 'list_book_item_meta_text',
 		listLoadMore : 'list_load_more',
+		listOfferItem : 'list_offer_item',
+		listOfferItemImage : 'list_offer_item_image',
+		listOfferItemPrice : 'list_offer_item_price',
+		listOfferItemShipping : 'list_offer_item_shipping',
 		tabView : 'tab_view',
 		tabWell : 'tab_well',
 		tabContentContainer : 'tab_content_container',
@@ -50,6 +55,12 @@
 		tabLabels : {
 			empty : 'No Book to Display',
 			pricesEmpty : 'No Prices Found'
+		},
+		listOffersLabels : {
+			emptyList : 'No Prices Found',
+			totalPrice : 'Total Price',
+			shipping : 'shipping'
 		}
+		
 	};
 })(JSBookSearch);

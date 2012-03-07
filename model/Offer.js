@@ -7,7 +7,8 @@
 			link:null,
 			merchant_id:'merchant',
 			price:null,
-			shipping_ground:'shippingPrice'
+			shipping_ground:'shippingPrice',
+			total_price:'totalPrice'
 		};
 
 

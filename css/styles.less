@@ -121,13 +121,22 @@
 
 }
 
-.bs-book_img {
-	width:70px;
-	height:70px;
+.bs-book_img, .bs-list_offer_item_image {
+
 	background-color:#fff;
 	background-repeat:no-repeat;
 	background-position:center center;
 	.box-shadow(0px, 2px, 5px, #dedede);	 /* #dedede*/
+}
+
+.bs-list_offer_item_image {
+	width:150px;
+	height:60px;
+}
+
+.bs-book_img_small {
+	width:70px;
+	height:70px;
 }
 
 .bs-book_img_large {
@@ -293,6 +302,28 @@
 		margin-left:100px;
 	}
 }
+
+.bs-list {
+	.bs-list_offer_item {
+		padding-right:15px;
+		height:72px;
+
+		.bs-list_offer_item_price {
+			text-align:right;
+			color:#999999;
+		}
+
+		.bs-list_offer_item_shipping {
+			text-align:right;
+			color:#666666;
+		}
+
+		.bs-list_offer_item_image {
+			float:left;
+		}
+	}
+}
+
 
 
 

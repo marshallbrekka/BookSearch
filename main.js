@@ -1,44 +1,62 @@
-var App = new mApp();
-var API = new mAPI(config.apiKey, 66, 150);
-API.merchants({obj:App, fn:App.addMerchants});
+var lib = JSBookSearch;
+var app = lib.app;
+lib.api.init(config.apiKey, 66, 150)
+var api = lib.api;
+api.merchants({obj:app, fn:app.addMerchants});
 var cb = {};
 cb.search = function(re) {
 	
-	App.maxPages = re.data.pages;
+	app.maxPages = re.data.pages;
 	var more = false;
 	if(re.data.page < re.data.pages) {
 		more = true;
 	}
-	list.addElements(re.data.books, more);
+	app.bookResults = app.bookResults.concat(re.data.books);
+	list.addBooks(re.data.books, more);
 }
 var loadMore = function() {
 	
-	API.search(App.currentSearch, API.IMG_SIZE_SM, App.currentPage++, {obj: cb, fn : cb.search});
+	api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage++, {obj: cb, fn : cb.search});
 }
 
 var selected = function(index) {
-	alert(index);
+	bookDetails.setBook(app.bookResults[index]);
+	tabView.setEmpty(false);
+	//alert(index);
 }
 var list = null;
 var tabView = null;
+var bookDetails = null;
 $(function(){
-	list = new vListView(selected, loadMore);
-	tabView = new vTabView();
+	list = new lib.view.BookList(selected, loadMore);
+	tabView = new lib.view.TabView();
+	bookDetails = new lib.view.BookDetails();
 	$('#bs-book').append(tabView.container);
-	tabView.addTab("Info", $('<p class="bs-tab_content">tab 1</p>'));
+	
+	tabView.addTab("Info", bookDetails.container);
 	tabView.addTab("New", $('<p class="bs-tab_content">tab 2</p>'));
 	tabView.addTab("Used", $('<p class="bs-tab_content">tab 3</p>'));
 	tabView.showTab(0);
-	tabView.setEmpty(false);
+	//tabView.setEmpty(false);
+	
 	$('#bs-list').append(list.container);
 	
 	$('#bs-searchBar form').submit(function(){
-		list.clearElements();
+		try {
+			
+		
+		list.clear();
 		list.setLoading();
 		var val = $('#search').val();
-		App.currentSearch = val;
-		App.currentPage = 1;
-		API.search(App.currentSearch, API.IMG_SIZE_SM, App.currentPage, {obj: cb, fn : cb.search});
+		app.currentSearch = val;
+		app.currentPage = 1;
+		app.bookResults = [];
+		api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage, {obj: cb, fn : cb.search});
+		
+		}
+		catch(e) {
+			console.log(e);
+		}
 		return false;
 	});
 		

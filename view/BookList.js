@@ -21,20 +21,18 @@
 	view.BookList.prototype._makeLoadMoreBtn = function() {
 		var btn = lib.dom.create({
 			tag : 'li',
-			options : {domClass : lib.constants.css.listLoadMore},
+			options : {domClass : [lib.constants.css.listLoadMore, lib.constants.css.listTextDark]},
 			text : lib.constants.strings.listBookLabels.loadMore,
 			jquery : true
 		});
 		var self = this;
 		lib.dom.click(btn, function() {
-			console.log("more");
 			self._loadMoreClick();
 		});
 		return btn;
 	}
 
 	view.BookList.prototype._loadMoreClick = function() {
-		console.log("load More")
 		if(this._loading) return;
 		this._loading = true;
 		
@@ -60,12 +58,11 @@
 		}
 		this._listView.addElements(listItems);
 		var newListSize = this._listView.size();
+		
 		if(!hasMore) {
 			this._listView._hideFooter();
 		}
-		if(newListSize !== 0 && listSize === 0) {
-			this._listView._showFooter();
-		}
+		
 
 	}
 

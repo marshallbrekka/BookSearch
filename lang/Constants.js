@@ -5,15 +5,19 @@
 	constants.domPrefix = "bs-";
 	constants.css = {
 		selected : 'selected',
+		imageBox : 'image_box',
 		bookImage : 'book_img', 
 		bookSizeSmall : 'book_img_small',
 		bookSizeLarge : 'book_img_large',
-		
 		list : 'list',
 		listBooks : 'list_books',
 		emptyIndicator : 'empty_indicator',
 		loading : 'loading',
 		listItem : 'list_item',
+		listItemFade : 'list_item_fade',
+		listTextDark : 'list_text_dark',
+		listTextMedium : 'list_text_medium',
+		listTextLight : 'list_text_light',
 		listBookItem : 'list_book_item', 
 		listBookItemTitle : 'list_book_item_title',
 		listBookItemMetaText : 'list_book_item_meta_text',

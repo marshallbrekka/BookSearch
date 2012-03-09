@@ -9,7 +9,7 @@
 	view.ListItemOffer = function(offer) {
 		var img = lib.dom.create({
 			tag : 'div',
-			options : {domClass: [lib.constants.css.listOfferItemImage]},
+			options : {domClass: [lib.constants.css.listOfferItemImage, lib.constants.css.imageBox]},
 			css : {
 				'background-image' : 'url("' + offer.merchant.image + '")'
 			}
@@ -17,13 +17,13 @@
 
 		var price = lib.dom.create({
 			tag : 'div',
-			options : {domClass : lib.constants.css.listOfferItemPrice},
+			options : {domClass : [lib.constants.css.listOfferItemPrice, lib.constants.css.listTextDark]},
 			text : lib.constants.strings.listOffersLabels.totalPrice + ": $" + offer.totalPrice
 		});
 		
 		var shipping = lib.dom.create({
 			tag : 'div',
-			options : {domClass : lib.constants.css.listOfferItemShipping},
+			options : {domClass : [lib.constants.css.listOfferItemShipping, lib.constants.css.listTextMedium]},
 			text : "$" + offer.price + " + $" + offer.shippingPrice + " " + lib.constants.strings.listOffersLabels.shipping
 		});
 

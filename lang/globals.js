@@ -9,6 +9,7 @@
 	util.extend = function(child, supertype)
 	{
 	  child.prototype.__proto__ = supertype.prototype;
+	  child.prototype.__super = supertype.prototype.constructor;
 	}
 
 	/**
@@ -29,6 +30,8 @@
 			return fn.apply(obj, arguments);
 		}
 	}
+	
+	
 
 })(JSBookSearch);
 

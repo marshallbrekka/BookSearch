@@ -4,7 +4,7 @@
 	 * creates the dom for a list item of a book
 	 * @constructor
 	 * @param {model.Offer} offer  
-	 * @TODO everything, this is just a copy so far of the book item
+	 * 
 	 */
 	view.ListItemOffer = function(offer) {
 		var img = lib.dom.create({
@@ -27,24 +27,11 @@
 			text : "$" + offer.price + " + $" + offer.shippingPrice + " " + lib.constants.strings.listOffersLabels.shipping
 		});
 
+
+		this.__super([img, price, shipping]);
 		
-		
-
-		this.container = lib.dom.create({
-			tag : 'li',
-			options : {domClass: [lib.constants.css.listOfferItem, lib.constants.css.listItem]},
-			children : [img, price, shipping]
-		});
+		lib.dom.addClass(this._container, lib.constants.css.listOfferItem);
 	}
 
-	
-	view.ListItemOffer.prototype.container = null;
-
-	view.ListItemOffer.prototype.select = function() {
-		lib.dom.addClass(this.container, lib.constants.css.selected);
-	}
-
-	view.ListItemOffer.prototype.deselect = function() {
-		lib.dom.removeClass(this.container,lib.constants.css.selected);
-	}
+	lib.util.extend(view.ListItemOffer, view.ListItem);
 })(JSBookSearch);

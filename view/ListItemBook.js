@@ -3,7 +3,7 @@
 	/**
 	 * creates the dom for a list item of a book
 	 * @constructor
-	 * @param {mBook} book  
+	 * @param {model.Book} book 
 	 */
 	view.ListItemBook = function(book) {
 		var img = lib.dom.create({
@@ -23,16 +23,11 @@
 			options : {domClass : [lib.constants.css.listBookItemTitle, lib.constants.css.listTextDark]},
 			text : book.title
 		});
-		
-		var edgeFade = lib.dom.create({
-			tag : 'div',
-			options : {domClass : lib.constants.css.listItemFade}
-		})
 
 		var keys = lib.constants.strings.bookMetaNames;
 		var metaKeys = [keys.author, keys.isbn10, keys.isbn13];
 		var metaVals = [book.author, book.isbn10, book.isbn13];
-		var elements = [edgeFade, img, title];
+		var elements = [img, title];
 
 		// build elements for meta info, and add the to elements array
 		for(var i = 0; i < metaKeys.length; i++) {
@@ -51,21 +46,14 @@
 			}
 		}
 
-		this.container = lib.dom.create({
-			tag : 'li',
-			options : {domClass: [lib.constants.css.listBookItem, lib.constants.css.listItem]},
-			children : elements
-		});
+		
+		this.__super(elements, true);
+		lib.dom.addClass(this._container, lib.constants.css.listBookItem);
+		
+		
 	}
 
 	
-	view.ListItemBook.prototype.container = null;
-
-	view.ListItemBook.prototype.select = function() {
-		lib.dom.addClass(this.container, lib.constants.css.selected);
-	}
-
-	view.ListItemBook.prototype.deselect = function() {
-		lib.dom.removeClass(this.container,lib.constants.css.selected);
-	}
+	
+	lib.util.extend(view.ListItemBook, view.ListItem);
 })(JSBookSearch);

@@ -50,9 +50,14 @@
 			element.text(text);
 		}
 		if(children) {
-			for(var x in children) {
-				element.append(children[x]);
+			if(children instanceof Array) {
+				for(var x in children) {
+					element.append(children[x]);
+				}	
+			} else {
+				element.append(children);
 			}
+			
 		}
 
 		if(jquery) {

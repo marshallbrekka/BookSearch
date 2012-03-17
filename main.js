@@ -32,16 +32,17 @@ var selected = function(index) {
 	var book = app.bookResults[index];
 	bookDetails.setBook(book);
 	tabView.setEmpty(false);
+	bookDetails.redraw();
 	var prices = [newPrices, usedPrices, ebookPrices];
 	if(book.offers == null) {
 		api.bookPrices(book.isbn10, {obj:cb, fn:cb.offers});
 		for(var i in prices) {
-			prices[i].clear();
-			prices[i].setLoading();
+			prices[i].clearElements();
+			prices[i].setLoading(true);
 		}
 	} else {
 		for(var i in prices) {
-			prices[i].clear();
+			prices[i].clearElements();
 			
 		}
 		displayOffers(book);
@@ -75,23 +76,27 @@ $(function(){
 	newPrices = new lib.view.OfferList(offerSelected);
 	usedPrices = new lib.view.OfferList(offerSelected);
 	ebookPrices = new lib.view.OfferList(offerSelected);
-	$('#bs-book').append(tabView.container);
+	$('#bs-book').append(tabView.getDomNode());
 	
-	tabView.addTab("Info", bookDetails.container);
-	tabView.addTab("New", newPrices.container);
-	tabView.addTab("Used", usedPrices.container);
-	tabView.addTab("eBook", ebookPrices.container);
+	tabView.addTab("Info", bookDetails);
+	tabView.addTab("New", newPrices);
+	tabView.addTab("Used", usedPrices);
+	tabView.addTab("eBook", ebookPrices);
 	tabView.showTab(0);
 	//tabView.setEmpty(false);
+
+	bookDetails.init();
 	
-	$('#bs-list').append(list.container);
+	$('#bs-list').append(list.getDomNode());
+	list.init();
+	
 	
 	$('#bs-searchBar form').submit(function(){
 		try {
 			
 		
-		list.clear();
-		list.setLoading();
+		list.clearElements();
+		list.setLoading(true);
 		var val = $('#search').val();
 		app.currentSearch = val;
 		app.currentPage = 1;

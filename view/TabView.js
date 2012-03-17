@@ -14,7 +14,7 @@
 			jquery : true
 		});
 
-		this.container = lib.dom.create({
+		this._container = lib.dom.create({
 			tag : 'div',
 			options : {domClass : lib.constants.css.tabView},
 			children : [this._emptyIndicator, this._tabWell, this._contentContainer]
@@ -31,6 +31,11 @@
 
 	}
 
+	/**
+	 * adds a view object to the tab container
+	 * @param {string} label the text to display for the tab
+	 * @param {view.View} view the view object to append
+	 */
 	view.TabView.prototype.addTab = function(label, view) {
 		var btn = lib.dom.create({
 			tag : 'li',
@@ -38,9 +43,12 @@
 			text : label
 		});
 		this._tabWell.append(btn);
-		this._contentContainer.append(view);
+		var domNode = view.getDomNode();
+		lib.dom.addClass(domNode, lib.constants.css.tabContent);
+		this._contentContainer.append(domNode);
 		this._tabs.push(btn);
 		this._tabContent.push(view);
+		view.init();
 
 	}
 
@@ -58,9 +66,10 @@
 
 	view.TabView.prototype.showTab = function(index) {
 		if(index === this._selectedIndex) return;
-		this._deselectTab(this._selectedIndex);
+		if(this._selectedIndex >= 0) this._deselectTab(this._selectedIndex);
 		this._selectTab(index);
 		this._selectedIndex = index;
+		
 	}
 
 	view.TabView.prototype._makeTabWell = function() {
@@ -80,13 +89,20 @@
 	}
 
 	view.TabView.prototype._deselectTab = function(index) {
+		var view = this._tabContent[index];
 		lib.dom.removeClass(this._tabs[index], lib.constants.css.selected);
-		lib.dom.removeClass(this._tabContent[index], lib.constants.css.selected);
+		lib.dom.removeClass(view.getDomNode(), lib.constants.css.selected);
+		view.redraw();
 	}
 
 	view.TabView.prototype._selectTab = function(index) {
+		var view = this._tabContent[index];
 		lib.dom.addClass(this._tabs[index], lib.constants.css.selected);
-		lib.dom.addClass(this._tabContent[index], lib.constants.css.selected);
+		lib.dom.addClass(view.getDomNode(), lib.constants.css.selected);
+		view.redraw();
+		
 	}
+	
+	lib.util.extend(view.TabView, view.View);
 })(JSBookSearch);
 

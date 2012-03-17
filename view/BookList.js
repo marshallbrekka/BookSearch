@@ -1,27 +1,32 @@
 (function(lib){
 	var view = lib.util.extendNamespace("view");
 	view.BookList = function(selectedCallback, loadMoreCallback) {
-
+	
+		
 		this._loadMoreBtn = this._makeLoadMoreBtn();
-		this._loading = false;
+	
 		this._loadMoreCallback = loadMoreCallback;
-		this._listView = new view.ListView({
+		
+		this.__super({
 			clickCallback: selectedCallback,
 			emptyLabel : lib.constants.strings.listBookLabels.emptyList,
-			footer : this._loadMoreBtn
+			footer : this._loadMoreBtn,
+			scroll : true
 		});
-		this.container = lib.dom.create({
+		
+		lib.dom.addClass(this._container, lib.constants.css.listBooks);
+		/*this.container = lib.dom.create({
 			tag : 'div',
 			options : {domClass : lib.constants.css.listBooks},
-			children : [this._listView.container]
-		});
+			children : this._listView.container
+		});*/
 	}
 
 
 	view.BookList.prototype._makeLoadMoreBtn = function() {
 		var btn = lib.dom.create({
 			tag : 'li',
-			options : {domClass : [lib.constants.css.listLoadMore, lib.constants.css.listTextDark]},
+			options : {domClass : lib.constants.css.listLoadMore},
 			text : lib.constants.strings.listBookLabels.loadMore,
 			jquery : true
 		});
@@ -36,19 +41,19 @@
 		if(this._loading) return;
 		this._loading = true;
 		
-		this._listView.setLoading(true);
+		this.setLoading(true);
 		this._loadMoreCallback();
 	}
 
 
 	/**
-	 * @param {mBook[]} elements array of book elements
+	 * @param {model.Book[]} elements array of book elements
 	 * @param {boolean} hasMore if there are more items that can be loaded
 	 */
 	view.BookList.prototype.addBooks = function(elements, hasMore) {
-		var listSize = this._listView.size();
+		var listSize = this.size();
 		if(this._loading) {
-			this._listView.setLoading(false);
+			this.setLoading(false);
 			this._loading = false;
 		}
 
@@ -56,31 +61,17 @@
 		for(var i in elements) {
 			listItems.push(new view.ListItemBook(elements[i]));
 		}
-		this._listView.addElements(listItems);
-		var newListSize = this._listView.size();
+		this.addElements(listItems);
+		
 		
 		if(!hasMore) {
-			this._listView._hideFooter();
+			this._hideFooter();
 		}
 		
 
 	}
-
-	view.BookList.prototype.clear = function(loading) {
-		
-		this._listView.clearElements();
-		if(loading) {
-			this._loading = true;
-			this.listView.setLoading(true);
-		}
-	}
-
-	view.BookList.prototype.setLoading = function() {
-		if(!this._loading) {
-			this._loading = true;
-			this._listView.setLoading(true);
-		}
-	}
+	
+	lib.util.extend(view.BookList, view.ListView);
 
 })(JSBookSearch);
 

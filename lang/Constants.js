@@ -3,6 +3,11 @@
 
 	constants.Condition = {'NEW' : 0, 'USED' : 1, 'EBOOK' : 2, 'RENTAL' : 3};
 	constants.domPrefix = "bs-";
+	
+	constants.scrollBar = {
+		minHandleSize : 50,
+		mouseWheelSpeed : 30
+	}
 	constants.css = {
 		selected : 'selected',
 		imageBox : 'image_box',
@@ -37,7 +42,9 @@
 		bookDetailsTitle : 'book_details_title',
 		bookDetailsRow : 'book_details_row',
 		bookDetailsLabel : 'book_details_label',
-		bookDetailsText : 'book_details_text'
+		bookDetailsText : 'book_details_text',
+		scrollBarGutter : 'scroll_bar_gutter',
+		scrollBarHandle : 'scroll_bar_handle'
 	};
 
 	constants.strings = {

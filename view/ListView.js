@@ -5,6 +5,8 @@
 	 * @param {function} [options.clickCallback] callback to be called when an item is selected
 	 * @param {string} options.emptyLabel text value of the empty label
 	 * @param {domNode} [options.footer] jquery dom node that sits at the bottom of the list
+	 * @param {boolean} [options.scroll = true] set scroll
+	 * @property {boolean} _loading is true if this list item is waiting for new items to be inserted
 	 */
 	view.ListView = function(options) {
 		var self = this;
@@ -13,10 +15,16 @@
 		this._loading = false;
 		this._clickCallback = options.clickCallback;
 		this._footer = options.footer;
+		this._scrollBar = null;
 		
-		this.container = lib.dom.create({
-			tag : 'ul',
+		this._container = lib.dom.create({
+			tag : 'div',
 			options : {domClass : lib.constants.css.list},
+			jquery : true
+		});
+		
+		this._list = lib.dom.create({
+			tag : 'ul',
 			jquery : true
 		});
 		
@@ -27,21 +35,37 @@
 			text : options.emptyLabel,
 			jquery : true
 		});
-
-		this.container.append(this._emptyIndicator);
+		this._list.append(this._emptyIndicator);
+		this._container.append(this._list);
 		
 		if(this._footer) {
-			this.container.append(this._footer);
+			this._list.append(this._footer);
 			this._hideFooter();
 		} 
 
 
 
-		lib.dom.onClick(this.container, "li", function(event){
+		lib.dom.onClick(this._list, "li", function(event){
 			var index = $(this).index();
 			self._listItemClick(index);
 		});
+		
+		
+		if(options.scroll || lib.util.empty(options.scroll)) {
+			this._scrollBar = new view.ScrollBar(this._container);
+			
+		}
 
+	}
+	
+	
+	view.ListView.prototype.init = function() {
+		if(this._scrollBar) this._scrollBar.init();
+		
+	}
+	
+	view.ListView.prototype.redraw = function() {
+		if(this._scrollBar) this._scrollBar.redraw();
 	}
 
 	/**
@@ -53,7 +77,7 @@
 
 	/**
 	 * adds books to list
-	 * @param {domNodes[]} elements an array of domNodes
+	 * @param {view.ListItem[]} elements an array of ListItems
 	 * 
 	 */
 	view.ListView.prototype.addElements = function(elements) {
@@ -74,21 +98,23 @@
 		for (var node in elements) {
 
 			this._elements.push(elements[node]);
-			this._emptyIndicator.before(elements[node].container);
+			this._emptyIndicator.before(elements[node].getDomNode());
 		}
+		if(this._scrollBar) this._scrollBar.redraw();
 	}
 
 	view.ListView.prototype.clearElements = function() {
 		this._elements = [];
 		this._selectedIndex = null;
 		if(this._footer) {
-			this.container.children().slice(0, -2).remove();
+			this._list.children().slice(0, -2).remove();
 		} else {
-			this.container.children().slice(0, -1).remove();
+			this._list.children().slice(0, -1).remove();
 		}
 
 		this._hideFooter();
 		this._showEmptyIndicator();
+		if(this._scrollBar) this._scrollBar.redraw();
 		
 
 	}
@@ -101,7 +127,7 @@
 		} else {
 			func = lib.dom.removeClass;
 		}
-		func(this.container, lib.constants.css.loading);
+		func(this._container, lib.constants.css.loading);
  
 	}
 
@@ -122,6 +148,7 @@
 	}
 
 	view.ListView.prototype._listItemClick = function(index) {
+		console.log(index);
 		var numElements = this._elements.length
 		if (numElements === 0 || index >= numElements) return;
 
@@ -133,6 +160,8 @@
 		this._elements[index].select();
 		this._clickCallback(index);
 	}
+	
+	lib.util.extend(view.ListView, view.View);
 })(JSBookSearch);
 
 

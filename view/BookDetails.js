@@ -6,7 +6,7 @@
 	 * 
 	 */
 	view.BookDetails = function() {
-		this.container;
+	
 		this._image;
 		this._metaData;	
 	
@@ -23,7 +23,7 @@
 		var imageWell = lib.dom.create({
 			tag : 'div',
 			options : {domClass : lib.constants.css.bookDetailsImageWell}/*,
-			children : [this._image]*/
+			children : this._image*/
 		});
 		
 		
@@ -34,11 +34,13 @@
 			jquery : true
 		});
 		
-		this.container = lib.dom.create({
+		this._container = lib.dom.create({
 			tag : 'div',
 			options : {domClass : [lib.constants.css.bookDetails, lib.constants.css.tabContent]},
 			children : [this._image, imageWell, this._metaData]
 		});
+		
+		this._scrollbar = new view.ScrollBar(this._container, this._metaData);
 		
 		
 		
@@ -109,6 +111,18 @@
 		});
 		return row;
 	}
+	
+	view.BookDetails.prototype.init = function() {
+		this._scrollbar.init();
+	}
+	
+	view.BookDetails.prototype.redraw = function() {
+		this._scrollbar.redraw();
+	}
+	
+	lib.util.extend(view.BookDetails, view.View);
+	
+	
 	
 	
 })(JSBookSearch);

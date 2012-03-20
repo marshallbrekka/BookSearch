@@ -51,7 +51,7 @@
 		});
 		
 		
-		if(options.scroll || lib.util.empty(options.scroll)) {
+		if(options.scroll) {
 			this._scrollBar = new view.ScrollBar(this._container);
 			
 		}

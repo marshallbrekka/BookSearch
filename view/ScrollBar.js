@@ -24,10 +24,9 @@
 			children : this._handle
 		});
 		
+		this._mouseEventState = {};
 		
 		
-		this._mousePositionY = null;
-		this._mouseGrabPostionY = null;
 		this._scrollPosition = 0;
 		
 		this._handleHeight = 0;
@@ -36,17 +35,29 @@
 			self._mouseMove(e);
 		}
 		
-		this._parent.mousewheel(function(){
-			self._mouseWheelMove.apply(self, arguments);
-		});
+		this._mouseUpFunction = function(e) {
+			self._mouseUp(e);
+		}
 		
-		window.scroll = this;
+		
+		
+		
+	
 		
 	}
 	
 	view.ScrollBar.prototype.init = function() {
+		var self = this;
 		this._parent.after(this._gutter);
 		this.redraw();
+		this._parent.mousewheel(function(){
+			self._mouseWheelMove.apply(self, arguments);
+		});
+		console.log(this);
+		console.log(this._handle.mousedown(function(){
+			console.log("wtf");
+			self._mouseDown.apply(self, arguments);
+		}));
 	}
 	
 	view.ScrollBar.prototype.redraw = function() {
@@ -117,7 +128,8 @@
 	}
 	
 	view.ScrollBar.prototype._moveHandleDistanceY = function(distY) {
-		
+		var start = parseInt(this._handle.css('top'));
+		this._handle.css('top', (distY + star) + 'px');
 	}
 	
 	
@@ -125,18 +137,43 @@
 	/* * * Event Handlers * * */
 	
 	view.ScrollBar.prototype._mouseMove = function(e) {
+		e.preventDefault();
+		var state = this._mouseEventState;
+		var mouseDistance = e.pageY - state.globalPX;
+		var percent = (state.gutterPX + mouseDistance) / (this._gutterHeight - this._handleHeight);
+		var distance = this._scrollPosition - ((this._realHeight -this._height) * percent);
+		
+		this._scrollDistanceY(-distance);
+		this._positionHandle();
+		
+		// shouldn't do this off handle, do it off scroll height of container instead'
+		
+		
 		
 	}
 	
 	view.ScrollBar.prototype._mouseDown = function(e) {
+		e.preventDefault();
+		var self = this;
+		$(window).mousemove(
+			this._mouseMoveFunction
+		).mouseup(
+			self._mouseUpFunction
+		);
 		
-		$(window).mousemove(this._mouseMoveFunction);
-		this._mouseGrabPositionY = e.pageY - this.offsetTop;
-		this._mousePosition = e.pageY;
+		var state = this._mouseEventState;
+		
+		state.handlePX = this._offsetY(e);
+		state.handlePercent = state.handlePX / this._handleHeight;
+		// gutter are from top of handle, not from mouse position
+		state.gutterPX = parseInt(this._handle.css('top'));
+		state.gutterPercent = state.gutterPX / this._gutterHeight;
+		state.globalPX = e.pageY;
+
 	}
 	
 	view.ScrollBar.prototype._mouseUp = function(e) {
-		$(window).unbind('mousemove', this._mouseMoveFunction);
+		$(window).unbind('mousemove', this._mouseMoveFunction).unbind('mouseup', this._mouseUp);
 	}
 	
 	view.ScrollBar.prototype._mouseWheelMove = function(e, d, dx, dy) {
@@ -144,6 +181,13 @@
 		this._scrollDistanceY(-dy * lib.constants.scrollBar.mouseWheelSpeed);
 		this._positionHandle();
 	}
+	
+	view.ScrollBar.prototype._offsetY = function(e) {
+		if(e.layerY) return e.layerY;
+		return e.offsetY;
+	}
+	
+	
 	
 	
 	

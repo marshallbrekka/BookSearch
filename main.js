@@ -70,7 +70,7 @@ var newPrices = null;
 var usedPrices = null;
 var ebookPrices = null;
 $(function(){
-	list = new lib.view.BookList(selected, loadMore);
+	
 	tabView = new lib.view.TabView();
 	bookDetails = new lib.view.BookDetails();
 	newPrices = new lib.view.OfferList(offerSelected);
@@ -78,17 +78,20 @@ $(function(){
 	ebookPrices = new lib.view.OfferList(offerSelected);
 	$('#bs-book').append(tabView.getDomNode());
 	
-	tabView.addTab("Info", bookDetails);
+	//tabView.addTab("Info", bookDetails);
 	tabView.addTab("New", newPrices);
 	tabView.addTab("Used", usedPrices);
-	tabView.addTab("eBook", ebookPrices);
-	tabView.showTab(0);
+	/*tabView.addTab("eBook", ebookPrices);*/
+	
 	//tabView.setEmpty(false);
 
-	bookDetails.init();
+	tabView.showTab(0);
+	list = new lib.view.BookList(selected, loadMore);
 	
 	$('#bs-list').append(list.getDomNode());
 	list.init();
+	tabView.init();
+	
 	
 	
 	$('#bs-searchBar form').submit(function(){

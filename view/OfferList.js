@@ -5,8 +5,9 @@
 		this.__super({
 			clickCallback: selectedCallback,
 			emptyLabel : lib.constants.strings.listOffersLabels.emptyList,
-			options : true
+			scroll : true
 		});
+		
 	
 		lib.dom.addClass(this._container, lib.constants.css.listBooks);
 	}

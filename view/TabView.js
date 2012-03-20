@@ -48,7 +48,7 @@
 		this._contentContainer.append(domNode);
 		this._tabs.push(btn);
 		this._tabContent.push(view);
-		view.init();
+		
 
 	}
 
@@ -101,6 +101,12 @@
 		lib.dom.addClass(view.getDomNode(), lib.constants.css.selected);
 		view.redraw();
 		
+	}
+	
+	view.TabView.prototype.init = function() {
+		for(var i = 0; i < this._tabContent.length; i++) {
+			this._tabContent[i].init();
+		}
 	}
 	
 	lib.util.extend(view.TabView, view.View);

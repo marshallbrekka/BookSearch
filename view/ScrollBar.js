@@ -102,8 +102,10 @@
 	view.ScrollBar.prototype._drawHandle = function() {
 		if(this._handleHeight == this._gutterHeight) {
 			this._handle.css('visibility','hidden');
+			this._gutter.css('visibility','hidden');
 	
 		} else {
+			this._gutter.css('visibility','visible');
 			this._handle.css('visibility','visible');
 			this._handle.css('height', this._handleHeight + 'px');
 		}

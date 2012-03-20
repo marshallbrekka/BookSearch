@@ -72,6 +72,13 @@
 			totalPrice : 'Total Price',
 			shipping : 'shipping'
 		}
+	
 		
+	};
+	
+	constants.resources = {
+		images : {
+			ajaxLoaderOnWhite : 'img/loader-on-white.gif'
+		}
 	};
 })(JSBookSearch);

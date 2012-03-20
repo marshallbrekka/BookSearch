@@ -31,7 +31,8 @@
 			'search',
 			{'keywords':isbn,'page':1, image_height : imgSize}, 
 			api._bookInfo, 
-			callback
+			callback,
+			imgSize
 		);
 	}
 
@@ -70,12 +71,18 @@
 	}
 
 	// based off data returned from search function
-	api._bookInfo = function(data) {
-
+	api._bookInfo = function(data, optionalData) {
 		var tmp = data.results.book;
 		if(tmp.length == 0) return null;
-
-		return new lib.model.Book(tmp[0]);
+		var book = new lib.model.Book(tmp[0]);
+		
+		if(optionalData == api.IMG_SIZE_LG) {
+			book.imageLarge = book.imageSmall;
+			book.imageSmall = null;
+		}
+		
+		
+		return book;
 	}
 
 	// based off data returned from bookInfo function

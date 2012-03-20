@@ -9,6 +9,7 @@
 	
 		this._image;
 		this._metaData;	
+		this._book;
 	
 		this._image = lib.dom.create({
 			tag : 'div',
@@ -52,8 +53,9 @@
 	 */
 	 
 	view.BookDetails.prototype.setBook = function(book) {
-		var url = lib.util.empty(book.imageLarge) ? book.imageSmall : book.imageLarge;
-		console.log(url);
+		this._book = book;
+		var url = lib.util.empty(book.imageLarge) ? lib.constants.resources.images.ajaxLoaderOnWhite : book.imageLarge;
+		
 		this._image.css({
 				'background-image' : 'url("' + url + '")'
 		});
@@ -89,6 +91,14 @@
 		
 		this._metaData.append(elements);
 		
+	}
+	
+	view.BookDetails.prototype.updateImage = function(book) {
+		var url = lib.util.empty(book.imageLarge) ? book.imageSmall : book.imageLarge;
+		
+		this._image.css({
+				'background-image' : 'url("' + url + '")'
+		});
 	}
 
 	view.BookDetails.prototype._createMetaRow = function(label, text) {

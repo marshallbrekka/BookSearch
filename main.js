@@ -78,10 +78,10 @@ $(function(){
 	ebookPrices = new lib.view.OfferList(offerSelected);
 	$('#bs-book').append(tabView.getDomNode());
 	
-	//tabView.addTab("Info", bookDetails);
+	tabView.addTab("Info", bookDetails);
 	tabView.addTab("New", newPrices);
 	tabView.addTab("Used", usedPrices);
-	/*tabView.addTab("eBook", ebookPrices);*/
+	tabView.addTab("eBook", ebookPrices);
 	
 	//tabView.setEmpty(false);
 

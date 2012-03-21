@@ -65,6 +65,7 @@
 	}
 	
 	view.ListView.prototype.redraw = function() {
+		console.log('redrawing scroll bar');
 		if(this._scrollBar) this._scrollBar.redraw();
 	}
 

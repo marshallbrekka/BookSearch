@@ -3,7 +3,7 @@
 	/**
 	 * adds a scroll bar to a view
 	 * @param {domNode} container container to be made scrollable
-	 * @param {domNode} [child] optionally speficy the child element, otherwise it will grab it for you.
+	 * @param {domNode} [child] optionally specify the child element, otherwise it will grab it for you.
 	
 	 */
 	view.ScrollBar = function(container, child) {
@@ -40,10 +40,6 @@
 		}
 		
 		
-		
-		
-	
-		
 	}
 	
 	view.ScrollBar.prototype.init = function() {
@@ -53,11 +49,9 @@
 		this._parent.mousewheel(function(){
 			self._mouseWheelMove.apply(self, arguments);
 		});
-		console.log(this);
-		console.log(this._handle.mousedown(function(){
-			console.log("wtf");
+		this._handle.mousedown(function(){
 			self._mouseDown.apply(self, arguments);
-		}));
+		});
 	}
 	
 	view.ScrollBar.prototype.redraw = function() {
@@ -129,12 +123,6 @@
 		
 	}
 	
-	view.ScrollBar.prototype._moveHandleDistanceY = function(distY) {
-		var start = parseInt(this._handle.css('top'));
-		this._handle.css('top', (distY + star) + 'px');
-	}
-	
-	
 	
 	/* * * Event Handlers * * */
 	
@@ -164,12 +152,7 @@
 		);
 		
 		var state = this._mouseEventState;
-		
-		state.handlePX = this._offsetY(e);
-		state.handlePercent = state.handlePX / this._handleHeight;
-		// gutter are from top of handle, not from mouse position
 		state.gutterPX = parseInt(this._handle.css('top'));
-		state.gutterPercent = state.gutterPX / this._gutterHeight;
 		state.globalPX = e.pageY;
 
 	}
@@ -184,18 +167,8 @@
 		this._positionHandle();
 	}
 	
-	view.ScrollBar.prototype._offsetY = function(e) {
-		if(e.layerY) return e.layerY;
-		return e.offsetY;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	lib.util.extend(view.ScrollBar, view.View);
 	
 })(JSBookSearch);
 

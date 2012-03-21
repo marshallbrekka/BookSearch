@@ -9,6 +9,10 @@
 		mouseWheelSpeed : 30
 	}
 	constants.css = {
+		
+		twoColumnView : 'two_column_view',
+		twoColumnViewColumn : 'two_column_view_column',
+		twoColumnViewShifter : 'two_column_view_shifter',
 		selected : 'selected',
 		imageBox : 'image_box',
 		bookImage : 'book_img', 

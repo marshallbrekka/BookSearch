@@ -109,6 +109,12 @@
 		}
 	}
 	
+	view.TabView.prototype.redraw = function() {
+		for(var i = 0; i < this._tabContent.length; i++) {
+			this._tabContent[i].redraw();
+		}
+	}
+	
 	lib.util.extend(view.TabView, view.View);
 })(JSBookSearch);
 

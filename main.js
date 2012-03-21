@@ -34,6 +34,9 @@ var selected = function(index) {
 	tabView.setEmpty(false);
 	bookDetails.redraw();
 	var prices = [newPrices, usedPrices, ebookPrices];
+	if(book.imageLarge == null) {
+		api.bookInfo(book.isbn10, api.IMG_SIZE_LG, {obj:cb,fn:getHighResImg});
+	}
 	if(book.offers == null) {
 		api.bookPrices(book.isbn10, {obj:cb, fn:cb.offers});
 		for(var i in prices) {
@@ -47,9 +50,15 @@ var selected = function(index) {
 		}
 		displayOffers(book);
 	}
-	
+	columnView.setColumnFocus(lib.view.TwoColumnView.RIGHT);
 	
 	//alert(index);
+}
+
+function getHighResImg(data) {
+	var book = app.bookResults[app.currentBookIndex];
+	book.imageLarge = data.data.imageLarge;
+	bookDetails.updateImage(book);
 }
 
 function displayOffers(book) {
@@ -69,6 +78,7 @@ var bookDetails = null;
 var newPrices = null;
 var usedPrices = null;
 var ebookPrices = null;
+var columnView = null;
 $(function(){
 	
 	tabView = new lib.view.TabView();
@@ -76,7 +86,7 @@ $(function(){
 	newPrices = new lib.view.OfferList(offerSelected);
 	usedPrices = new lib.view.OfferList(offerSelected);
 	ebookPrices = new lib.view.OfferList(offerSelected);
-	$('#bs-book').append(tabView.getDomNode());
+	
 	
 	tabView.addTab("Info", bookDetails);
 	tabView.addTab("New", newPrices);
@@ -85,12 +95,21 @@ $(function(){
 	
 	//tabView.setEmpty(false);
 
-	tabView.showTab(0);
-	list = new lib.view.BookList(selected, loadMore);
 	
-	$('#bs-list').append(list.getDomNode());
-	list.init();
-	tabView.init();
+	list = new lib.view.BookList(selected, loadMore);
+	columnView = new lib.view.TwoColumnView({
+		view : list,
+		minWidth : 400,
+		percent : 40
+	},{
+		view : tabView,
+		minWidth : 400,
+		percent : 60
+	});
+	$('#bs-results').append(columnView.getDomNode());
+	columnView.redraw();
+	tabView.showTab(0);
+	
 	
 	
 	
@@ -105,7 +124,7 @@ $(function(){
 		app.currentPage = 1;
 		app.bookResults = [];
 		api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage, {obj: cb, fn : cb.search});
-		
+		columnView.setColumnFocus(lib.view.TwoColumnView.LEFT);
 		}
 		catch(e) {
 			console.log(e);

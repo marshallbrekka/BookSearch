@@ -104,8 +104,14 @@ $(function(){
 	},{
 		view : tabView,
 		minWidth : 400,
-		percent : 60
-	});
+		percent : 60,
+		switchColumnView : lib.dom.create({
+			tag: 'div',
+			options : {domClass : lib.constants.css.twoColumnViewSwitchButton},
+			text : 'Back To All Books',
+			jquery : true
+		})
+	}, 30);
 	$('#bs-results').append(columnView.getDomNode());
 	columnView.redraw();
 	tabView.showTab(0);

@@ -65,7 +65,7 @@
 	}
 	
 	view.ListView.prototype.redraw = function() {
-		console.log('redrawing scroll bar');
+		
 		if(this._scrollBar) this._scrollBar.redraw();
 	}
 
@@ -149,7 +149,7 @@
 	}
 
 	view.ListView.prototype._listItemClick = function(index) {
-		console.log(index);
+		
 		var numElements = this._elements.length
 		if (numElements === 0 || index >= numElements) return;
 

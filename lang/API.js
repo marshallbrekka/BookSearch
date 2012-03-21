@@ -137,7 +137,7 @@
 			if(status !== 'success') {
 				output.status = false;
 			} else {
-				console.log(data.response.page);
+				
 				output.data = dataFunc(data.response.page, optionalData);
 			}
 

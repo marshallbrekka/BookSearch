@@ -7,28 +7,36 @@
 	 * you can specify min widths, and percentages of view each column can take up
 	 * @param {object} left the left column
 	 * @param {object} right the right column
+	 * @param {int} [gapWidth=0] optional gap between the 2 columns. only shows when they are both visible
 	 * @param {view.View} object.view the view object
 	 * @param {int} object.minWidth the minumum width of the view
 	 * @param {int} object.percent the percentage of the column view the view should cover
+	 * @param {$(DomNode)} [object.switchColumnView] the view to display at the bottom of the column if only one is shown that when clicked will bring you back to the other column
 	 */
-	view.TwoColumnView = function(left, right) {
+	view.TwoColumnView = function(left, right, gapWidth) {
 		this._columnFocus = view.TwoColumnView.LEFT;
 		this._singleColumn = false;
 		this._fluidFixed = false;
 		this._fluidSize = null;
+		this._gapWidth = gapWidth ? gapWidth : 0;
+		
+		
+		
 		
 		this._left = left;
 		this._right = right;
 		this._leftDom = lib.dom.create({
 			tag : 'div',
 			options : {domClass : lib.constants.css.twoColumnViewColumn},
-			children : left.view.getDomNode(),
+			children : [left.view.getDomNode(), left.switchColumnView],
 			jquery : true
 		});
+		
+		
 		this._rightDom = lib.dom.create({
 			tag : 'div',
 			options : {domClass : lib.constants.css.twoColumnViewColumn},
-			children : right.view.getDomNode(),
+			children : [$(right.view.getDomNode()).css('left',this._gapWidth + 'px'), right.switchColumnView],
 			jquery : true
 		});
 		
@@ -62,6 +70,18 @@
 		$(window).resize(function(){
 			self.redraw();
 		});
+		
+		if(left.switchColumnView) {
+			lib.dom.click(left.switchColumnView, function(){
+				self.setColumnFocus(view.TwoColumnView.RIGHT);
+			});
+		}
+		
+		if(right.switchColumnView) {
+			lib.dom.click(right.switchColumnView, function(){
+				self.setColumnFocus(view.TwoColumnView.LEFT);
+			});
+		}
 	}
 	
 	view.TwoColumnView.LEFT = 0;
@@ -89,53 +109,66 @@
 		var left = this._left;
 		var right = this._right;
 		
-		if( width < left.minWidth + right.minWidth ) {
+		if( width < left.minWidth + right.minWidth + this._gapWidth ) {
 			if(!this._singleColumn) {
+				// set to single column
+				$(this._right.view.getDomNode()).css('left','0px');
 				this._wrapper.css({
 					width:'200%',
 					left : (-100 * this._columnFocus) + '%' 
 				});
 				this._singleColumn = true;
+				this._fluidFixed = false;
 				this._leftDom.css('right','50%');
 				this._rightDom.css('left','50%');
+				this._showSwitchColumnView(this._right);
+				this._showSwitchColumnView(this._left);
 			}
 
 		} else {
 			if(this._singleColumn) {
+				// set to two column
 				this._wrapper.css({
 					width:'100%',
 					left : 0 
 				});
+				$(this._right.view.getDomNode()).css('left', this._gapWidth + 'px');
 				this._leftDom.css('right',(100 - this._left.percent) + '%');
 				this._rightDom.css('left',(100 - this._right.percent) + '%');
 				this._singleColumn = false;
+				this._hideSwitchColumnView(this._right);
+				this._hideSwitchColumnView(this._left);
+				this.redraw();
+				return;
 			}
 			if(!this._fluidFixed) {
 				if(this._leftDom.width() == left.minWidth) {
 					this._sizeColumn(view.TwoColumnView.RIGHT);
 				
-				} else if(this._rightDom.width() == right.minWidth) {
+				} else if(this._rightDom.width() == right.minWidth + this._gapWidth) {
 					this._sizeColumn(view.TwoColumnView.LEFT);
 					
 				}
 			} else {
-				var fixedDom, fixed, fluidDom, fluid, positionProperty;
+				var fixedDom, fixed, fluidDom, fluid, positionProperty, gapWidth;
 				
 				if(this._fluidSide == view.TwoColumnView.LEFT) {
 					fixedDom = this._rightDom;
 					fixed = this._right;
+					gapWidth = this._gapWidth;
 					fluidDom = this._leftDom;
 					fluid = this._left;
 					positionProperty = 'right';
 				} else {
 					fixedDom = this._leftDom;
 					fixed = this._left;
+					gapWidth = 0;
 					fluidDom = this._rightDom;
 					fluid = this._right;
 					positionProperty = 'left';
 				}
 				
-				if(fixedDom.width() > fixed.minWidth) {
+				if(fixedDom.width() > fixed.minWidth + gapWidth) {
 					this._fluidFixed = false;
 					fluidDom.css(positionProperty, (100 - fluid.percent) + '%');
 				}
@@ -167,6 +200,25 @@
 		
 		fluid.css(positionProperty, fixedWidth + 'px');
 		
+	}
+	
+	view.TwoColumnView.prototype._showSwitchColumnView = function(column) {
+		if(column.switchColumnView) {
+			var view = column.switchColumnView;
+			view.css('display','block');
+			var height = view.outerHeight();
+			$(column.view.getDomNode()).css('bottom',height + 'px');
+			
+		}
+	}
+	
+	view.TwoColumnView.prototype._hideSwitchColumnView = function(column) {
+		if(column.switchColumnView) {
+			var view = column.switchColumnView;
+			var height = view.outerHeight();
+			$(column.view.getDomNode()).css('bottom','0px');
+			view.css('display','none');
+		}
 	}
 	
 	lib.util.extend(view.TwoColumnView, view.View);

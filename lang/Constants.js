@@ -6,13 +6,14 @@
 	
 	constants.scrollBar = {
 		minHandleSize : 50,
-		mouseWheelSpeed : 30
+		mouseWheelSpeed : 50
 	}
 	constants.css = {
 		
 		twoColumnView : 'two_column_view',
 		twoColumnViewColumn : 'two_column_view_column',
 		twoColumnViewShifter : 'two_column_view_shifter',
+		twoColumnViewSwitchButton : 'two_column_view_switch_button',
 		selected : 'selected',
 		imageBox : 'image_box',
 		bookImage : 'book_img', 

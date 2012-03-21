@@ -170,6 +170,23 @@
 	.absolute(0,0,0,0);
 }
 
+.bs-two_column_view_switch_button {
+	position:absolute;
+	bottom:0;
+	height:50px;
+	text-align:center;
+	color:@textMedium;
+	font-weight:bold;
+	font-size:20px;
+	background:#f1f1f1;
+	border-top:1px solid #999999;
+	left:0;
+	right:0;
+	line-height:50px;
+	vertical-align: middle;
+	display:none;
+}
+
 
 #bookSearchJS {
 	font-family:Arial, sans-serif;
@@ -189,6 +206,7 @@
 
 .bs-list_books {
 	.absolute(0,0,0,0);
+	
 	background:#f7f7f7;
 }
 
@@ -326,11 +344,12 @@
 }
 
 .bs-tab_view {
-	position:absolute;
+	.absolute(0,0,0,0);
+	/*position:absolute;
 	top:0;
 	bottom:0;
 	left:30px;
-	right:0;
+	right:0;*/
 	
 	.bs-tab_content_container {
 		position:absolute;

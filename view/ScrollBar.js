@@ -8,6 +8,9 @@
 	 */
 	view.ScrollBar = function(container, child) {
 		var self = this;
+		if(!view.ScrollBar.systemScrollBarWidth) {
+		    this._findScrollBarWidth();
+		}
 		this._parent = $(container);
 		this._wrapper = child ? child : this._parent.children();
 		
@@ -38,7 +41,7 @@
 		this._mouseUpFunction = function(e) {
 			self._mouseUp(e);
 		}
-		
+		this._parent.css('right',-view.ScrollBar.systemScrollBarWidth + 'px');
 		
 	}
 	
@@ -46,8 +49,8 @@
 		var self = this;
 		this._parent.after(this._gutter);
 		this.redraw();
-		this._parent.mousewheel(function(){
-			self._mouseWheelMove.apply(self, arguments);
+	    this._parent.scroll(function(){
+			self._scrollEvent.apply(self, arguments);
 		});
 		this._handle.mousedown(function(){
 			self._mouseDown.apply(self, arguments);
@@ -95,10 +98,12 @@
 	
 	view.ScrollBar.prototype._drawHandle = function() {
 		if(this._handleHeight == this._gutterHeight) {
+		    
 			this._handle.css('visibility','hidden');
 			this._gutter.css('visibility','hidden');
 	
 		} else {
+		    
 			this._gutter.css('visibility','visible');
 			this._handle.css('visibility','visible');
 			this._handle.css('height', this._handleHeight + 'px');
@@ -120,6 +125,7 @@
 		
 		this._parent.scrollTop(newPos);
 		this._setScrollPosition();
+		return newPos;
 		
 	}
 	
@@ -163,8 +169,26 @@
 	
 	view.ScrollBar.prototype._mouseWheelMove = function(e, d, dx, dy) {
 		if(dy == 0) return;
-		this._scrollDistanceY(-dy * lib.constants.scrollBar.mouseWheelSpeed);
+		var newPos = this._scrollDistanceY(-dy * lib.constants.scrollBar.mouseWheelSpeed);
 		this._positionHandle();
+		if(newPos == 0) {
+		    e.preventDefault();
+		}
+	}
+	
+	view.ScrollBar.prototype._scrollEvent = function() {
+	    this._setScrollPosition();
+	    this._positionHandle();
+	}
+	
+	view.ScrollBar.prototype._findScrollBarWidth = function() {
+	    var originalWidth = 30;
+	    var test = $('<div style="width:' + originalWidth + 'px; height:10px; overflow-y:scroll; visibility:hidden;">' + 
+	                    '<div style="height:60px;"></div></div>');
+	    $('body').append(test);
+	    var newWidth = test.children().width();
+	    test.remove();
+	    view.ScrollBar.systemScrollBarWidth = originalWidth - newWidth;
 	}
 	
 

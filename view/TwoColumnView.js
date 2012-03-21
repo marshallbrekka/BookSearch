@@ -40,6 +40,8 @@
 			jquery : true
 		});
 		
+		
+		
 		right.view.init();
 		left.view.init();
 		
@@ -71,17 +73,23 @@
 			self.redraw();
 		});
 		
+		var switchToLeftFn = function(){
+			self.setColumnFocus(view.TwoColumnView.LEFT);
+		}
+		
+		var switchToRightFn = function(){
+			self.setColumnFocus(view.TwoColumnView.RIGHT);
+		}
+		
 		if(left.switchColumnView) {
-			lib.dom.click(left.switchColumnView, function(){
-				self.setColumnFocus(view.TwoColumnView.RIGHT);
-			});
+			lib.dom.click(left.switchColumnView, switchToRightFn);
 		}
 		
 		if(right.switchColumnView) {
-			lib.dom.click(right.switchColumnView, function(){
-				self.setColumnFocus(view.TwoColumnView.LEFT);
-			});
+			lib.dom.click(right.switchColumnView, switchToLeftFn);
 		}
+		
+		
 	}
 	
 	view.TwoColumnView.LEFT = 0;

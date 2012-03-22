@@ -4,7 +4,7 @@
 	 * adds a scroll bar to a view
 	 * @param {domNode} container container to be made scrollable
 	 * @param {domNode} [child] optionally specify the child element, otherwise it will grab it for you.
-	
+	 * @TODO rewrite so that you can add it to any element that is absolutely positioned
 	 */
 	view.ScrollBar = function(container, child) {
 		var self = this;
@@ -13,6 +13,13 @@
 		}
 		this._parent = $(container);
 		this._wrapper = child ? child : this._parent.children();
+		this._scrollPane = lib.dom.create({
+			tag : 'div',
+			options : {domClass : lib.constants.css.scrollBarParent},
+			jquery : true
+		}).css('right', - view.ScrollBar.systemScrollBarWidth + 'px');
+		
+		this._scrollPane = this._parent.wrapInner(this._scrollPane).css('overflow-y','hidden').children();
 		
 		this._handle = lib.dom.create({
 			tag : 'div',
@@ -26,6 +33,8 @@
 			jquery : true,
 			children : this._handle
 		});
+		
+		this._parent.append(this._gutter);
 		
 		this._mouseEventState = {};
 		
@@ -41,17 +50,26 @@
 		this._mouseUpFunction = function(e) {
 			self._mouseUp(e);
 		}
-		this._parent.css('right',-view.ScrollBar.systemScrollBarWidth + 'px');
+		
 		
 	}
 	
 	view.ScrollBar.prototype.init = function() {
 		var self = this;
-		this._parent.after(this._gutter);
+		
 		this.redraw();
-	    this._parent.scroll(function(){
+		
+	    this._scrollPane.scroll(function(){
+			
 			self._scrollEvent.apply(self, arguments);
 		});
+		
+		this._parent.scroll(function(){
+			console.log('prevent');
+			self._preventParentScroll();
+		});
+		
+		
 		this._handle.mousedown(function(){
 			self._mouseDown.apply(self, arguments);
 		});
@@ -79,7 +97,7 @@
 		
 	
 	view.ScrollBar.prototype._setScrollPosition = function() {
-		this._scrollPosition = this._parent.scrollTop();
+		this._scrollPosition = this._scrollPane.scrollTop();
 	}
 	
 	view.ScrollBar.prototype._getOffsetHeight = function() {
@@ -123,7 +141,7 @@
 		}
 		
 		
-		this._parent.scrollTop(newPos);
+		this._scrollPane.scrollTop(newPos);
 		this._setScrollPosition();
 		return newPos;
 		
@@ -177,14 +195,20 @@
 	}
 	
 	view.ScrollBar.prototype._scrollEvent = function() {
+		
 	    this._setScrollPosition();
 	    this._positionHandle();
 	}
 	
+	view.ScrollBar.prototype._preventParentScroll = function() {
+		if(this._parent.scrollLeft() != 0) this._parent.scrollLeft(0);
+		if(this._parent.scrollTop() != 0) this._parent.scrollTop(0);
+	}
+	
 	view.ScrollBar.prototype._findScrollBarWidth = function() {
 	    var originalWidth = 30;
-	    var test = $('<div style="width:' + originalWidth + 'px; height:10px; overflow-y:scroll; visibility:hidden;">' + 
-	                    '<div style="height:60px;"></div></div>');
+	    var test = $('<div style="width:' + originalWidth + 'px; height:90px; overflow-y:scroll; visibility:hidden;">' + 
+	                    '<div style="height:100px;"></div></div>');
 	    $('body').append(test);
 	    var newWidth = test.children().width();
 	    test.remove();

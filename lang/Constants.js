@@ -48,6 +48,7 @@
 		bookDetailsRow : 'book_details_row',
 		bookDetailsLabel : 'book_details_label',
 		bookDetailsText : 'book_details_text',
+		scrollBarParent : 'scroll_bar_parent',
 		scrollBarGutter : 'scroll_bar_gutter',
 		scrollBarHandle : 'scroll_bar_handle'
 	};

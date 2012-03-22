@@ -99,11 +99,11 @@ $(function(){
 	list = new lib.view.BookList(selected, loadMore);
 	columnView = new lib.view.TwoColumnView({
 		view : list,
-		minWidth : 400,
+		minWidth : 320,
 		percent : 40
 	},{
 		view : tabView,
-		minWidth : 400,
+		minWidth : 320,
 		percent : 60,
 		switchColumnView : lib.dom.create({
 			tag: 'div',

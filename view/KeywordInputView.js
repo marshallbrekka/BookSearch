@@ -7,11 +7,12 @@
 	 * @PARAM {function} searchCallback the function that gets called when the form is submitted
 	 */
 	view.KeywordInputView = function(searchCallback) {
+		this._empty = true;
 		this._searchCallback = searchCallback;
 		this._textField = lib.dom.create({
 			tag : 'input',
 			options : {
-				domClass : [lib.constants.css.keywordInputTextField, lib.constants.css.emptyempty],
+				domClass : [lib.constants.css.keywordInputTextField, lib.constants.css.empty],
 				type : 'text',
 				value : lib.constants.strings.keywordInput.defaultText
 			},
@@ -19,20 +20,26 @@
 		});
 		
 		this._submitButton = lib.dom.create({
-			tag : 'input',
+			tag : 'button',
 			options : {
 				domClass : lib.constants.css.keywordInputSubmit,
-				type : 'submit',
-				value : lib.constants.strings.keywordInput.submit
+				type : 'submit'
 			},
+			jquery : true,
+			text : lib.constants.strings.keywordInput.submit
+		});
+		
+		this._form = lib.dom.create({
+			tag : 'form',
+			options : {domClass : lib.constants.css.keywordInputForm},
+			children : [this._textField, this._submitButton],
 			jquery : true
 		});
 		
 		this._container = lib.dom.create({
-			tag : 'form',
+			tag : 'div',
 			options : {domClass : lib.constants.css.keywordInput},
-			children : [this._textField, this._submit],
-			jquery : true
+			children : this._form
 		});
 		
 		var self = this;
@@ -42,27 +49,33 @@
 		    self._onTextFieldLoseFocus();
 		});
 		
-		this._container.submit(function(){
-		   self._onSubmit(); 
+		this._form.submit(function(e){
+		   self._onSubmit(e); 
 		});
 	}
 	
 	
-	view.KeywordInputView.prototype._onSubmit = function() {
+	view.KeywordInputView.prototype._onSubmit = function(e) {
+		e.preventDefault();
 	    var val = this._textField.val();
 	    if(!lib.util.empty(val)) {
 	        this._textField.blur();
-	        this._searchCallback();
+	        this._searchCallback(val);
 	    }
 	}
 	
 	view.KeywordInputView.prototype._onTextFieldEnterFocus = function() {
-		this._textField.val('');
-		lib.dom.removeClass(this._textField, lib.constants.css.empty);
+		if(this._empty) {
+			this._textField.val('');
+			lib.dom.removeClass(this._textField, lib.constants.css.empty);
+			this._empty = false;
+		}
+		
 	}
 	
 	view.KeywordInputView.prototype._onTextFieldLoseFocus = function() {
 		if(lib.util.empty(this._textField.val())) {
+			this._empty = true;
 			lib.dom.addClass(this._textField, lib.constants.css.empty);
 			this._textField.val(lib.constants.strings.keywordInput.defaultText);
 		}

@@ -94,7 +94,7 @@ $(function(){
 	tabView.addTab("eBook", ebookPrices);
 	
 	//tabView.setEmpty(false);
-
+	
 	
 	list = new lib.view.BookList(selected, loadMore);
 	columnView = new lib.view.TwoColumnView({
@@ -112,20 +112,19 @@ $(function(){
 			jquery : true
 		})
 	}, 30);
-	$('#bs-results').append(columnView.getDomNode());
-	columnView.redraw();
-	tabView.showTab(0);
 	
 	
 	
 	
-	$('#bs-searchBar form').submit(function(){
+	
+	
+	var startSearch = function(val){
 		try {
 			
 		
-		list.clearElements();
+		list.clearElements(val);
 		list.setLoading(true);
-		var val = $('#search').val();
+		
 		app.currentSearch = val;
 		app.currentPage = 1;
 		app.bookResults = [];
@@ -136,7 +135,16 @@ $(function(){
 			console.log(e);
 		}
 		return false;
-	});
+	}
+	
+	var searchView = new lib.view.KeywordInputView(startSearch);
+	lib.dom.setId(searchView.getDomNode(), 'topRow');
+	lib.dom.setId(columnView.getDomNode(), 'bottomRow');
+	$('#bookSearchJS').append(columnView.getDomNode());
+	$('#bookSearchJS').append(searchView.getDomNode());
+	
+	columnView.redraw();
+	tabView.showTab(0);
 		
 });
 

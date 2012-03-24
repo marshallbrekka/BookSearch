@@ -73,6 +73,18 @@
 	dom.removeClass = function(obj, domClass) {
 		$(obj).removeClass(lib.constants.domPrefix + domClass);
 	}
+	
+	
+	
+	/**
+	 * sets the id of the object
+	 * @param {domNode} obj the object to set the id for
+	 * @param {string} [id] if no id is passed in it set the id to null
+	 */
+	dom.setId = function(obj, id) {
+		if (!id) id = "";
+		$(obj).attr('id', lib.constants.domPrefix + id);
+	}
 
 	dom.click = function(obj, func) {
 		if(lib.app.mobile) {
@@ -93,6 +105,8 @@
 		} 
 		$(obj).on(event, "li", func);
 	}
+	
+	
 
 
 

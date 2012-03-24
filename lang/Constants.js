@@ -8,6 +8,7 @@
 		minHandleSize : 50,
 		mouseWheelSpeed : 50
 	}
+
 	constants.css = {
 		
 		twoColumnView : 'two_column_view',
@@ -22,6 +23,7 @@
 		list : 'list',
 		listBooks : 'list_books',
 		emptyIndicator : 'empty_indicator',
+		empty : 'empty',
 		loading : 'loading',
 		listItem : 'list_item',
 		listItemFade : 'list_item_fade',
@@ -50,7 +52,11 @@
 		bookDetailsText : 'book_details_text',
 		scrollBarParent : 'scroll_bar_parent',
 		scrollBarGutter : 'scroll_bar_gutter',
-		scrollBarHandle : 'scroll_bar_handle'
+		scrollBarHandle : 'scroll_bar_handle',
+		keywordInput : 'keyword_input',
+		keywordInputForm : 'keyword_input_form',
+		keywordInputTextField : 'keyword_input_text_field',
+		keywordInputSubmit : 'keyword_input_submit'
 	};
 
 	constants.strings = {
@@ -77,9 +83,11 @@
 			emptyList : 'No Prices Found',
 			totalPrice : 'Total Price',
 			shipping : 'shipping'
+		},
+		keywordInput : {
+			defaultText : 'Title, Author, ISBN, Keywords',
+			submit : 'Search'
 		}
-	
-		
 	};
 	
 	constants.resources = {

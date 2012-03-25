@@ -56,6 +56,7 @@
 		keywordInput : 'keyword_input',
 		keywordInputForm : 'keyword_input_form',
 		keywordInputTextField : 'keyword_input_text_field',
+		keywordInputTextFieldWrapper : 'keyword_input_text_field_wrapper',
 		keywordInputSubmit : 'keyword_input_submit'
 	};
 

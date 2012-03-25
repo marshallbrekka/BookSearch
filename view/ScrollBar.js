@@ -1,5 +1,6 @@
 (function(lib){
 	var view = lib.util.extendNamespace("view");
+	
 	/**
 	 * adds a scroll bar to a view
 	 * @param {domNode} container container to be made scrollable

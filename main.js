@@ -1,6 +1,6 @@
 var lib = JSBookSearch;
 var app = lib.app;
-lib.api.init(config.apiKey, 66, 150)
+lib.api.init(config.apiKey, 66, 130)
 var api = lib.api;
 api.merchants({obj:app, fn:app.addMerchants});
 var cb = {};
@@ -99,11 +99,11 @@ $(function(){
 	list = new lib.view.BookList(selected, loadMore);
 	columnView = new lib.view.TwoColumnView({
 		view : list,
-		minWidth : 320,
+		minWidth : 400,
 		percent : 40
 	},{
 		view : tabView,
-		minWidth : 320,
+		minWidth : 400,
 		percent : 60,
 		switchColumnView : lib.dom.create({
 			tag: 'div',

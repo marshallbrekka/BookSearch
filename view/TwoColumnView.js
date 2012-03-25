@@ -127,7 +127,10 @@
 				});
 				this._singleColumn = true;
 				this._fluidFixed = false;
+				this._
 				this._leftDom.css('right','50%');
+				this._setMinWidth(this._leftDom);
+				this._setMinWidth(this._rightDom);
 				this._rightDom.css('left','50%');
 				this._showSwitchColumnView(this._right);
 				this._showSwitchColumnView(this._left);
@@ -141,6 +144,8 @@
 					left : 0 
 				});
 				$(this._right.view.getDomNode()).css('left', this._gapWidth + 'px');
+				this._setMinWidth(this._leftDom, this._left.minWidth);
+				this._setMinWidth(this._rightDom, this._right.minWidth);
 				this._leftDom.css('right',(100 - this._left.percent) + '%');
 				this._rightDom.css('left',(100 - this._right.percent) + '%');
 				this._singleColumn = false;
@@ -227,6 +232,13 @@
 			$(column.view.getDomNode()).css('bottom','0px');
 			view.css('display','none');
 		}
+	}
+	
+	view.TwoColumnView.prototype._setMinWidth = function(obj, intVal) {
+		if(!intVal) {
+			intVal = 0;
+		}
+		obj.css('min-width', intVal + 'px');
 	}
 	
 	lib.util.extend(view.TwoColumnView, view.View);

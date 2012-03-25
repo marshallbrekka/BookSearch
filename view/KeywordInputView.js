@@ -9,6 +9,8 @@
 	view.KeywordInputView = function(searchCallback) {
 		this._empty = true;
 		this._searchCallback = searchCallback;
+		
+		
 		this._textField = lib.dom.create({
 			tag : 'input',
 			options : {
@@ -17,6 +19,12 @@
 				value : lib.constants.strings.keywordInput.defaultText
 			},
 			jquery : true
+		});
+		
+		var textFieldWrapper = lib.dom.create({
+			tag : 'div',
+			options : {domClass : lib.constants.css.keywordInputTextFieldWrapper},
+			children : this._textField
 		});
 		
 		this._submitButton = lib.dom.create({
@@ -32,7 +40,7 @@
 		this._form = lib.dom.create({
 			tag : 'form',
 			options : {domClass : lib.constants.css.keywordInputForm},
-			children : [this._textField, this._submitButton],
+			children : [textFieldWrapper, this._submitButton],
 			jquery : true
 		});
 		
@@ -57,6 +65,7 @@
 	
 	view.KeywordInputView.prototype._onSubmit = function(e) {
 		e.preventDefault();
+		if(this._empty) return;
 	    var val = this._textField.val();
 	    if(!lib.util.empty(val)) {
 	        this._textField.blur();

@@ -11,6 +11,7 @@
 		api.API_KEY = API_KEY;
 		api.IMG_SIZE_SM = IMG_SIZE_SM;
 		api.IMG_SIZE_LG = IMG_SIZE_LG;
+		this._requestId = 0;
 	}
 	
 	
@@ -20,14 +21,14 @@
 	 * 
 	 */
 	api.bookPrices = function(isbn, callback) {
-		api._genericSystem('prices', {'isbn':isbn}, api._bookPrices, callback);
+		return api._genericSystem('prices', {'isbn':isbn}, api._bookPrices, callback);
 	}
 
 	api.bookInfo = function(isbn, imgSize, callback) {
 		// not using because returns inferior results to search function
 		//this._genericSystem('bookinfo', {'isbn':isbn,'image_width':imgWidth}, this._bookInfo, callback);
 
-		api._genericSystem(
+		return api._genericSystem(
 			'search',
 			{'keywords':isbn,'page':1, image_height : imgSize}, 
 			api._bookInfo, 
@@ -37,7 +38,7 @@
 	}
 
 	api.search = function(keywords, imgSize, page, callback) {
-		api._genericSystem(
+		return api._genericSystem(
 			'search', 
 			{'keywords':keywords, 'page':page, image_height : imgSize}, 
 			api._search, 
@@ -61,7 +62,7 @@
 
 
 	api.merchants = function(callback) {
-		api._genericSystem('merchants', {'coupons':''}, api._merchants, callback);
+		return api._genericSystem('merchants', {'coupons':''}, api._merchants, callback);
 	}
 
 
@@ -132,17 +133,19 @@
 	}
 
 	api._genericSystem = function(func, params, dataFunc, callback, optionalData) {
+		var requestId = this._requestId++;
 		this._buildQuery(func, params, function(data, status) {
-			var output = {status:true, data:null};
+			var output = {status:true, data:null, id : requestId};
 			if(status !== 'success') {
 				output.status = false;
 			} else {
-				
+			
 				output.data = dataFunc(data.response.page, optionalData);
 			}
-
+			
 			callback.fn.call(callback.obj, output);
 		});
+		return requestId;
 	}
 
 	api._buildQuery = function(func, params, callback) {

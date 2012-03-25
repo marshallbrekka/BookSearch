@@ -84,7 +84,7 @@
 		for(var i in keys) {
 			var key = keys[i];
 			var text = book[key];
-			if(lib.util.empty(text)) break;
+			if(lib.util.empty(text)) continue;
 			var label = lib.constants.strings.bookMetaNames[key];
 			elements.push(this._createMetaRow(label, text));
 		}

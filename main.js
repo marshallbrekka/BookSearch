@@ -1,10 +1,13 @@
 var lib = JSBookSearch;
 var app = lib.app;
-lib.api.init(config.apiKey, 66, 130)
+lib.api.init(lib.config.apiKey, 66, 130)
 var api = lib.api;
-api.merchants({obj:app, fn:app.addMerchants});
-var cb = {};
-cb.search = function(re) {
+function addMerchants(data) {
+	app.addMerchants(data);
+}
+api.merchants(addMerchants);
+
+var search = function(re) {
 	
 	app.maxPages = re.data.pages;
 	var more = false;
@@ -15,7 +18,7 @@ cb.search = function(re) {
 	list.addBooks(re.data.books, more);
 }
 
-cb.offers = function(re) {
+var offers = function(re) {
 	var offers = re.data;
 	app.bookResults[app.currentBookIndex].offers = offers;
 	newPrices.addOffers(offers.types[lib.constants.Condition.NEW]);
@@ -24,7 +27,7 @@ cb.offers = function(re) {
 }
 var loadMore = function() {
 	
-	api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage++, {obj: cb, fn : cb.search});
+	api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage++, search);
 }
 
 var selected = function(index) {
@@ -35,10 +38,10 @@ var selected = function(index) {
 	bookDetails.redraw();
 	var prices = [newPrices, usedPrices, ebookPrices];
 	if(book.imageLarge == null) {
-		api.bookInfo(book.isbn10, api.IMG_SIZE_LG, {obj:cb,fn:getHighResImg});
+		api.bookInfo(book.isbn10, api.IMG_SIZE_LG, getHighResImg);
 	}
 	if(book.offers == null) {
-		api.bookPrices(book.isbn10, {obj:cb, fn:cb.offers});
+		api.bookPrices(book.isbn10, offers);
 		for(var i in prices) {
 			prices[i].clearElements();
 			prices[i].setLoading(true);
@@ -128,7 +131,7 @@ $(function(){
 		app.currentSearch = val;
 		app.currentPage = 1;
 		app.bookResults = [];
-		api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage, {obj: cb, fn : cb.search});
+		api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage, search);
 		columnView.setColumnFocus(lib.view.TwoColumnView.LEFT);
 		}
 		catch(e) {

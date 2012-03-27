@@ -95,7 +95,7 @@
 	/*
 	 * return object
 	 * @param {object} data
-	 * @returnd {object} [int] obj.pages, [int] obj.page, [Book] obj.books
+	 * @return {object} [int] obj.pages, [int] obj.page, [Book] obj.books
 	 * 
 	 */
 	api._search = function(data) {
@@ -143,7 +143,7 @@
 				output.data = dataFunc(data.response.page, optionalData);
 			}
 			
-			callback.fn.call(callback.obj, output);
+			callback(output);
 		});
 		return requestId;
 	}

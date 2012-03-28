@@ -2,46 +2,38 @@ var lib = JSBookSearch;
 var app = lib.app;
 lib.api.init(lib.config.apiKey, 66, 130)
 var api = lib.api;
+var bookData = new lib.controller.BookData();
 function addMerchants(data) {
 	app.addMerchants(data);
 }
 api.merchants(addMerchants);
 
-var search = function(re) {
-	
-	app.maxPages = re.data.pages;
-	var more = false;
-	if(re.data.page < re.data.pages) {
-		more = true;
-	}
-	app.bookResults = app.bookResults.concat(re.data.books);
-	list.addBooks(re.data.books, more);
+var search = function(books, hasMore) {
+	list.addBooks(books, hasMore);
 }
 
-var offers = function(re) {
-	var offers = re.data;
-	app.bookResults[app.currentBookIndex].offers = offers;
+var offers = function(book) {
+	var offers = book.offers
 	newPrices.addOffers(offers.types[lib.constants.Condition.NEW]);
 	usedPrices.addOffers(offers.types[lib.constants.Condition.USED]);
 	ebookPrices.addOffers(offers.types[lib.constants.Condition.EBOOK]);
 }
 var loadMore = function() {
 	
-	api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage++, search);
+	bookData.loadMore(search);
 }
 
 var selected = function(index) {
-	app.currentBookIndex = index;
-	var book = app.bookResults[index];
+	var book = bookData.getBook(index)
 	bookDetails.setBook(book);
 	tabView.setEmpty(false);
 	bookDetails.redraw();
 	var prices = [newPrices, usedPrices, ebookPrices];
 	if(book.imageLarge == null) {
-		api.bookInfo(book.isbn10, api.IMG_SIZE_LG, getHighResImg);
+		bookData.loadLargeBookImage(index, getHighResImg);
 	}
 	if(book.offers == null) {
-		api.bookPrices(book.isbn10, offers);
+		bookData.loadOffers(index, offers);
 		for(var i in prices) {
 			prices[i].clearElements();
 			prices[i].setLoading(true);
@@ -51,26 +43,18 @@ var selected = function(index) {
 			prices[i].clearElements();
 			
 		}
-		displayOffers(book);
+		offers(book);
 	}
 	columnView.setColumnFocus(lib.view.TwoColumnView.RIGHT);
 	
 	//alert(index);
 }
 
-function getHighResImg(data) {
-	var book = app.bookResults[app.currentBookIndex];
-	book.imageLarge = data.data.imageLarge;
+function getHighResImg(book) {
 	bookDetails.updateImage(book);
 }
 
-function displayOffers(book) {
-	var offers = book.offers;
-		
-	newPrices.addOffers(offers.types[lib.constants.Condition.NEW]);
-	usedPrices.addOffers(offers.types[lib.constants.Condition.USED]);
-	ebookPrices.addOffers(offers.types[lib.constants.Condition.EBOOK]);
-}
+
 
 var offerSelected = function(index) {
 	alert(index);
@@ -127,11 +111,10 @@ $(function(){
 		
 		list.clearElements(val);
 		list.setLoading(true);
+		tabView.setEmpty(true);
 		
-		app.currentSearch = val;
-		app.currentPage = 1;
-		app.bookResults = [];
-		api.search(app.currentSearch, api.IMG_SIZE_SM, app.currentPage, search);
+		bookData.search(val, search)
+
 		columnView.setColumnFocus(lib.view.TwoColumnView.LEFT);
 		}
 		catch(e) {

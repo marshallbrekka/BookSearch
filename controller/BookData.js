@@ -73,7 +73,7 @@
 		if(book.imageLarge) {
 			callback(book);
 		} else {
-			var requestId = this._api.bookInfo(book.isbn10, this._api.IMG_SIZE_LG, this._fnWrapper.loadLargeBookImage);
+			var requestId = this._api.bookInfo(book.isbn10, this._api.IMG_SIZE_LG, this._fnWrappers.addLargeBookImage);
 			this._createRequestSet(requestId, index, callback);
 		}
 		
@@ -84,7 +84,7 @@
 		if(book.offers) {
 			callback(book);
 		} else {
-			var requestId = this._api.bookPrices(book.isbn10, this._fnWrapper.loadOffers);
+			var requestId = this._api.bookPrices(book.isbn10, this._fnWrappers.loadOffers);
 			this._createRequestSet(requestId, index, callback);
 		}
 		

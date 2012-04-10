@@ -8,8 +8,15 @@
 	 */
 	util.extend = function(child, supertype)
 	{
-	  child.prototype.__proto__ = supertype.prototype;
-	  child.prototype.__super = supertype.prototype.constructor;
+		function inheritance() { }
+		inheritance.prototype = supertype.prototype;
+    	child.prototype = new inheritance();
+    	child.prototype.constructor = child;
+    	child.prototype.__super = supertype;
+    	//subClass.superClass = baseClass.prototype;
+		
+	  	//child.prototype = new supertype;
+	  	//child.prototype.__super = supertype.prototype.constructor;
 	}
 
 	/**

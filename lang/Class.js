@@ -1,15 +1,37 @@
 /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
+ * http://ejohn.org/blog/simple-javascript-inheritance/
+ * var Person = Class.extend({
+  init: function(isDancing){
+    this.dancing = isDancing;
+  },
+  dance: function(){
+    return this.dancing;
+  }
+});
+var Ninja = Person.extend({
+  init: function(){
+    this._super( false );
+  },
+  dance: function(){
+    // Call the inherited version of dance()
+    return this._super();
+  },
+  swingSword: function(){
+    return true;
+  }
+});
  */
 // Inspired by base2 and Prototype
 (function(lib){
   var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
   // The base Class implementation (does nothing)
-  this.Class = function(){};
+  
+  lib.Class = function(){};
   
   // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
+  lib.Class.extend = function(prop) {
     var _super = this.prototype;
     
     // Instantiate a base class (but only create the instance,
@@ -58,6 +80,6 @@
     // And make this class extendable
     Class.extend = arguments.callee;
     
-    lib.Class = Class;
+    return Class;
   };
 })(JSBookSearch);

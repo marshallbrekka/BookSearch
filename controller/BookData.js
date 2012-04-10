@@ -64,6 +64,10 @@
 		}
 		return null;
 	}
+    
+    controller.BookData.prototype.getCurrentBook = function() {
+        return this._books[this._currentBookIndex];
+    }
 	
 	
 	
@@ -118,9 +122,19 @@
 	
 	controller.BookData.prototype._addLargeBookImage = function(ajax) {
 		var request = this._getRequestSet(ajax.id);
+        var book;
 		if(request) {
-			var book = this._books[request.bookIndex];
-			book.imageLarge = ajax.data.imageLarge;
+            book = this._books[request.bookIndex];
+            if(!ajax.status) {
+                if(this._currentBookIndex == request.bookIndex) {
+                    this._logError("There was an error connecting to the server");
+                }
+                
+            } else {
+              
+                book.imageLarge = ajax.data.imageLarge;
+            }
+            
 			if(this._currentBookIndex == request.bookIndex) {
 				request.callback(book);
 			}
@@ -130,28 +144,54 @@
 	
 	controller.BookData.prototype._addBooks = function(ajax) {
 		var request = this._getRequestSet(ajax.id);
+        var books = null;
+        var more = false;
 		if(request) {
-			this._maxPages = ajax.data.pages;
+            if(!ajax.status) {
+                this._logError("There was an error connecting to the server");
+                this._currentPage = this._currentPage === 1 ? 1 : this._currentPage - 1;
+                more = true;
+            } else if(ajax.data === null) {
+                more = false;
+                
+            
+            } else {
+                this._maxPages = ajax.data.pages;
+                
+                if(ajax.data.page < ajax.data.pages) {
+                    more = true;
+                }
+                this._books = this._books.concat(ajax.data.books);
+                books = ajax.data.books
+            }
 			
-			var more = false;
-			if(ajax.data.page < ajax.data.pages) {
-				more = true;
-			}
-			this._books = this._books.concat(ajax.data.books);
-			request.callback(ajax.data.books, more);
+            request.callback(books, more);
 		}
 	}
 	
 	controller.BookData.prototype._loadOffers = function(ajax) {
 		var request = this._getRequestSet(ajax.id);
+        var book;
 		if(request) {
-			var book = this._books[request.bookIndex];
-			book.offers = ajax.data;
+            if(!ajax.status) {
+                this._logError("There was an error connecting to the server");
+            } else if(ajax.data == null) {
+                book = null; 
+            } else {
+                
+                book = this._books[request.bookIndex];
+                book.offers = ajax.data;
+            }
+			
 			if(this._currentBookIndex == request.bookIndex) {
 				request.callback(book);
 			}
 		}
 	}
+    
+    controller.BookData.prototype._logError = function(msg) {
+        alert(msg);
+    }
 	
 	
 	

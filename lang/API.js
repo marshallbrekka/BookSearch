@@ -17,11 +17,9 @@
 	
 
 
-	/**
-	 * 
-	 */
+	
 	api.bookPrices = function(isbn, callback) {
-		return api._genericSystem('prices', {'isbn':isbn}, api._bookPrices, callback);
+		return api._genericSystem('prices', {'isbn':isbn}, api._bookPrices, callback, 20000);
 	}
 
 	api.bookInfo = function(isbn, imgSize, callback) {
@@ -33,16 +31,27 @@
 			{'keywords':isbn,'page':1, image_height : imgSize}, 
 			api._bookInfo, 
 			callback,
+            10000,
 			imgSize
 		);
 	}
 
-	api.search = function(keywords, imgSize, page, callback) {
+	
+    /**
+	 * performes a search using the provided keywords and page
+     * @param {string} keywords the search terms
+     * @param {IMG_SIZE_SM|IMG_SIZE_LG} imgSize determines the size of the image that will be returned for the results
+     * @param {int} page the page of results to return
+     * @param {function({boolean status, obj data, int id})} callback the callback function to be called when the request finishes
+     * @return {int} the unique id for this request
+	 */
+    api.search = function(keywords, imgSize, page, callback) {
 		return api._genericSystem(
 			'search', 
 			{'keywords':keywords, 'page':page, image_height : imgSize}, 
 			api._search, 
-			callback
+			callback,
+            10000
 		);
 	}
 
@@ -62,17 +71,19 @@
 
 
 	api.merchants = function(callback) {
-		return api._genericSystem('merchants', {'coupons':''}, api._merchants, callback);
+		return api._genericSystem('merchants', {'coupons':''}, api._merchants, callback, 15000);
 	}
 
 
 	api._bookPrices = function(data) {
+        if(data.offers === undefined) return null;
 		var offers = new lib.model.BookOffers(data.offers.condition);
 		return offers;
 	}
 
 	// based off data returned from search function
 	api._bookInfo = function(data, optionalData) {
+        if(data.results === undefined) return null;
 		var tmp = data.results.book;
 		if(tmp.length == 0) return null;
 		var book = new lib.model.Book(tmp[0]);
@@ -88,6 +99,7 @@
 
 	// based off data returned from bookInfo function
 	api._bookInfoHelper = function(data) {
+        if(data.book === undefined) return null;
 		return new lib.model.Book(data.book);
 	}
 
@@ -99,6 +111,7 @@
 	 * 
 	 */
 	api._search = function(data) {
+        if(data.results == undefined) return null;
 		var results = {
 			pages : parseInt(data.pages),
 			page : parseInt(data.current_page)
@@ -118,6 +131,7 @@
 
 	api._bookPricesAndInfo = function(data) {
 		var book = this._bookInfoHelper(data);
+        if(book == null) return null;
 		book.offers = this._bookPrices(data);
 		return book;
 	}
@@ -132,11 +146,11 @@
 		return merchants;
 	}
 
-	api._genericSystem = function(func, params, dataFunc, callback, optionalData) {
+	api._genericSystem = function(func, params, dataFunc, callback, timeout, optionalData) {
 		var requestId = this._requestId++;
 		this._buildQuery(func, params, function(data, status) {
 			var output = {status:true, data:null, id : requestId};
-			if(status !== 'success') {
+			if(status !== 'success' || data.response['@attributes'].status !== "ok") {
 				output.status = false;
 			} else {
 			
@@ -144,26 +158,29 @@
 			}
 			
 			callback(output);
-		});
+		}, timeout);
 		return requestId;
 	}
 
-	api._buildQuery = function(func, params, callback) {
+	api._buildQuery = function(func, params, callback, timeout) {
 		var full = this.BASE_URL + func + "?";
 		full += "key=" + this.API_KEY + "&format=json";
 		for(var key in params) {
 			full += "&" + key + '=' + params[key];
 		}
 
-		return this._loadQuery(full, callback);
+		return this._loadQuery(full, callback, timeout);
 	}
 
-	api._loadQuery = function(url, callback) {
+	api._loadQuery = function(url, callback, timeout) {
+       
 		$.ajax({
 			url: url,
 			dataType: 'jsonp',
 			data: '',
-			success: callback
+			success: callback,
+            error : callback,
+            timeout : timeout
 		});
 	}
 	

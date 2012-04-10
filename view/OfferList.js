@@ -1,9 +1,12 @@
 (function(lib){
 	var view = lib.util.extendNamespace("view");
-	view.OfferList = function(selectedCallback) {
-	
+	view.OfferList = function(selectedCallback, offerType) {
+        
+        var callback = function(index) {
+            selectedCallback(offerType, index);
+        }
 		this.__super({
-			clickCallback: selectedCallback,
+			clickCallback: callback,
 			emptyLabel : lib.constants.strings.listOffersLabels.emptyList,
 			scroll : true
 		});

@@ -1,38 +1,34 @@
 (function(lib){
 	var view = lib.util.extendNamespace("view");
-	view.OfferList = function(selectedCallback, offerType) {
-        
-        var callback = function(index) {
-            selectedCallback(offerType, index);
+    
+    view.OfferList = view.ListView.extend({
+        init : function(selectedCallback, offerType) {
+            var callback = function(index) {
+                selectedCallback(offerType, index);
+            }
+            this._super({
+                clickCallback: callback,
+                emptyLabel : lib.constants.strings.listOffersLabels.emptyList,
+                scroll : true
+            });
+            lib.dom.addClass(this._container, lib.constants.css.listBooks);
+        },
+
+        /**
+         * @param {model.Offer[]} offers array of offer objects
+         */
+        addOffers : function(offers) {
+            if(this._loading) {
+                this.setLoading(false);
+            }
+
+            var listItems = [];
+            for(var i in offers) {
+                listItems.push(new view.ListItemOffer(offers[i]));
+            }
+            this.addElements(listItems);
         }
-		this.__super({
-			clickCallback: callback,
-			emptyLabel : lib.constants.strings.listOffersLabels.emptyList,
-			scroll : true
-		});
-		
-	
-		lib.dom.addClass(this._container, lib.constants.css.listBooks);
-	}
-
-	/**
-	 * @param {model.Offer[]} offers array of offer objects
-	 */
-	view.OfferList.prototype.addOffers = function(offers) {
-		if(this._loading) {
-			this.setLoading(false);
-		}
-
-		var listItems = [];
-		for(var i in offers) {
-			listItems.push(new view.ListItemOffer(offers[i]));
-		}
-		this.addElements(listItems);
-
-
-	}	
-	
-	lib.util.extend(view.OfferList, view.ListView);
+    });
 
 })(JSBookSearch);
 

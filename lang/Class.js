@@ -83,3 +83,4 @@ var Ninja = Person.extend({
     return Class;
   };
 })(JSBookSearch);
+

@@ -12,11 +12,11 @@
 		inheritance.prototype = supertype.prototype;
     	child.prototype = new inheritance();
     	child.prototype.constructor = child;
-    	child.prototype.__super = supertype;
+    	child.prototype._super = supertype;
     	//subClass.superClass = baseClass.prototype;
 		
 	  	//child.prototype = new supertype;
-	  	//child.prototype.__super = supertype.prototype.constructor;
+	  	//child.prototype._super = supertype.prototype.constructor;
 	}
 
 	/**

@@ -3,6 +3,7 @@
 	
 	controller.MainPage = lib.Class.extend({
         init : function(parent) {
+            lib.dom.addClass(parent, 'container');
             this.bookData = new lib.controller.BookData();
             var self = this;
 

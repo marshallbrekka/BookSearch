@@ -28,6 +28,11 @@
                 options : {domClass : lib.constants.css.scrollBarHandle},
                 jquery : true
             });
+            
+            var tempHandle = this._handle.get(0);
+            tempHandle.unselectable = "on";
+            tempHandle.onselectstart = function(){return false};
+            tempHandle.style.userSelect = tempHandle.style.MozUserSelect = "none";
 
             this._gutter = lib.dom.create({
                 tag : 'div',
@@ -157,8 +162,8 @@
         _mouseDown : function(e) {
             e.preventDefault();
             var self = this;
-            $(window).mousemove(
-                this._mouseMoveFunction
+            $(document).mousemove(
+                self._mouseMoveFunction
             ).mouseup(
                 self._mouseUpFunction
             );
@@ -170,7 +175,7 @@
         },
 
         _mouseUp : function(e) {
-            $(window).unbind('mousemove', this._mouseMoveFunction).unbind('mouseup', this._mouseUp);
+            $(document).unbind('mousemove', this._mouseMoveFunction).unbind('mouseup', this._mouseUp);
         },
 
         _mouseWheelMove : function(e, d, dx, dy) {

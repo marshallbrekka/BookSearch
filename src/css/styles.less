@@ -40,10 +40,17 @@
 	background: -o-linear-gradient(left, @leftColor 0%,@rightColor 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(left, @leftColor 0%,@rightColor 100%); /* IE10+ */
 	background: linear-gradient(left, @leftColor 0%,@rightColor 100%); /* W3C */
-	/*@nLeft : hsla(hue(@leftColor), saturation(@leftColor), lightness(@leftColor), alpha(@leftColor));
-	@nRight : hsla(hue(@rightColor), saturation(@rightColor), lightness(@rightColor), alpha(@rightColor));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=@nLeft, endColorstr=@nRight,GradientType=1 ); /* IE6-9 */
+        
+        @left: argb(@leftColor);
+        @right: argb(@rightColor);
 	
+	filter: ~"progid:DXImageTransform.Microsoft.gradient( startColorstr=@{left}, endColorstr=@{right},GradientType=1 )";  /*IE6-9 */
+	
+}
+
+.argb(@color) {
+    
+    
 }
 
 .border-radius(@tl, @tr, @bl, @br) {
@@ -56,12 +63,13 @@
 }
 
 .opacity(@opacity) {
+        @ie: @opacity * 100;
 	-moz-opacity: @opacity;
 	-khtml-opacity: @opacity;
 	opacity: @opacity;
-	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=(@opacity*100));
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=(@opacity*100));
-
+	/*-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=(@opacity*100));
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=(@opacity*100));*/
+        filter: ~"alpha(opacity=@{ie})";
 }
 
 
@@ -132,6 +140,7 @@
 .bs-scroll_bar_parent {
 	.absolute(0,0,0,0);
 	overflow-y:scroll;
+        overflow-x:hidden;
 }
 
 .bs-scroll_bar_gutter {
@@ -221,16 +230,13 @@
 
 .bs-list.bs-loading {
 	.bs-empty_indicator {
-		overflow:hidden;
-		height:0px;
-		padding-top:32px;
+                color:transparent;
+                height:32px;
 		background:url(../img/loader-list-empty.gif) no-repeat center center;
 	}
 	
 	.bs-list_load_more {
-		height:0px;
-		padding-top:60px;
-		overflow:hidden;
+		color:transparent;
 		background:url(../img/loader-list-empty.gif) no-repeat center center;
 		cursor:default;
 		

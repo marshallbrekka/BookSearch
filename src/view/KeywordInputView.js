@@ -28,6 +28,7 @@
                 children : this._textField
             });
 
+            // @TODO ie7 convertes type to "button" instead of submit
             this._submitButton = lib.dom.create({
                 tag : 'button',
                 options : {

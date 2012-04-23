@@ -12,6 +12,9 @@
          */
         init : function(children, fadeRight) {
             if(!children) children = [];
+            if(fadeRight) {
+                children.unshift(this._addFadingEdge());
+            }
             this._container = lib.dom.create({
                 tag : 'li',
                 options : {domClass: lib.constants.css.listItem},
@@ -19,16 +22,14 @@
                 children : children
             });
 
-            if(fadeRight) this._addFadingEdge();
+            
         },
 
         _addFadingEdge : function() {
-            this.getDomNode().append(
-                lib.dom.create({
+            return lib.dom.create({
                     tag : 'div',
                     options : {domClass : lib.constants.css.listItemFade}
-                })
-            );
+                });
         },
 
         select : function() {

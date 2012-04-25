@@ -1,4 +1,4 @@
-JS Book Search
+JS Book Search (Alpha)
 ==================================================
 
 This is a book search application that uses the [CampusBooks](https://partners.campusbooks.com) API for searching and price comparison. 

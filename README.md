@@ -25,7 +25,8 @@ There will now be a `dist` directory in the root of the project. There are full 
 ## Usage
 --------------------------------------
 
-To use in your page simply include the relevant CSS and JS files, and run:
+
+To use in your page simply include the relevant CSS and JS files, as well as the jQuery library, and run:
 
 ```javascript
 BookSearch.init({container:'#bookSearchJS', apiKey:'#######'});
@@ -34,6 +35,8 @@ BookSearch.init({container:'#bookSearchJS', apiKey:'#######'});
 where container can be a CSS selector or a DOMNode object.
 
 The only other requirement is **the container must be positioned.** So if you are only using `width` and `height` to define its size, just add `position:relative` to its CSS style, otherwise the app will fill the entire browser window.
+
+You can use the `index.html` file in the `dist` directory as an example.
 
 
 ## Configuration Options
@@ -46,7 +49,7 @@ All options are set as properties to the object that is passed in to the init me
 - `container` CSS selector or DOMNode
 - `apiKey` your campus books api key
 
-#### Options
+#### Optional
 - `bookImageSmall` int value of small book image max width and height 
 - `bookImageLarge` int value of large book image max width and height
 

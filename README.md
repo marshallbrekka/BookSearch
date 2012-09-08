@@ -7,7 +7,7 @@ This is a book search application that uses the [CampusBooks](https://partners.c
 
 It is designed in such a way that you should be able to just drop it in to your existing site without much configuration. 
 
-[View the demo](http://dev.marshallbrekka.com/booksearch)
+[View the demo](http://marshallbrekka.github.com/BookSearch)
 
 
 ## Building

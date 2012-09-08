@@ -22,7 +22,7 @@ function build() {
 }
 
 function createDirectories() {
-    if(path.existsSync(DIST_FILE_PATH)) {
+    if(fs.existsSync(DIST_FILE_PATH)) {
         rm.sync(DIST_FILE_PATH);
     }
     
